@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import { Heart, Code, Coffee, Server } from 'lucide-react';
+import { Heart, Code, Coffee } from 'lucide-react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();

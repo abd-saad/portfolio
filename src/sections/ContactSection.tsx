@@ -2,28 +2,24 @@
 
 import React, { useState } from 'react';
 import { 
-  Mail, 
-  Phone, 
   Send, 
   Github, 
   Linkedin, 
   CheckCircle,
-  ArrowRight,
-  LucideIcon
 } from 'lucide-react';
 // import contacts from '@/data/contacts.json';
 
-type TBaseContact = {
-  type: string;
-  value: string;
-};
+// type TBaseContact = {
+//   type: string;
+//   value: string;
+// };
 
-type TContactItem = TBaseContact & {
-  label?: string;
-  href?: string;
-  description?: string;
-  icon: LucideIcon;
-};
+// type TContactItem = TBaseContact & {
+//   label?: string;
+//   href?: string;
+//   description?: string;
+//   icon: LucideIcon;
+// };
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -101,9 +97,9 @@ export const ContactSection: React.FC = () => {
     <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Let's Work Together</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Let&apos;s Work Together</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Ready to optimize your infrastructure? Let's discuss how I can help scale your systems 
+            Ready to optimize your infrastructure? Let&apos;s discuss how I can help scale your systems 
             and streamline your deployment processes.
           </p>
         </div>
@@ -114,7 +110,7 @@ export const ContactSection: React.FC = () => {
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Get In Touch</h3>
               <p className="text-gray-600 leading-relaxed">
-                I'm always interested in discussing new opportunities, whether it's optimizing existing 
+                I&apos;m always interested in discussing new opportunities, whether it&apos;s optimizing existing 
                 infrastructure, building new cloud architectures, or consulting on DevOps best practices.
               </p>
             </div>
@@ -271,7 +267,7 @@ export const ContactSection: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Message Sent Successfully!</h3>
                 <p className="text-gray-600">
-                  Thank you for reaching out. I'll get back to you within 24 hours.
+                  Thank you for reaching out. I&apos;ll get back to you within 24 hours.
                 </p>
               </div>
             )}
