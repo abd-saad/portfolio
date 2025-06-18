@@ -5,10 +5,11 @@ import { THomepage } from '@/types/homepage'
 
 export default async function Home() {
   const homepage = await getHomepage();
+  
   return (
     <>
-      {homepage.map((homepage) => renderHomepage(homepage))}
-      <ContactSection/>
+      {homepage.map((homepageItem) => renderHomepage(homepageItem))}
+      <ContactSection />
     </>
   )
 }
@@ -16,7 +17,7 @@ export default async function Home() {
 const renderHomepage = (homepage: THomepage) => {
   switch (homepage.section_type) {
     case 'hero':
-      return <HeroSection key={homepage.id} content={homepage}/>;
+      return <HeroSection key={homepage.id} content={homepage} />;
     default:
       return null;
   }
