@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Header, Footer } from '@/components/shared'
 import { getHomepage } from '@/services/homepage'
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -60,6 +62,8 @@ export default async function RootLayout({
         <Header sections={navSections} />
         <main className="min-h-screen">
           {children}
+          <SpeedInsights />
+          <Analytics />
         </main>
         <Footer sections={navSections} />
       </body>
