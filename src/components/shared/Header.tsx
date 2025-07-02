@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Navigation } from './Navigation';
 
-export const Header = () => {
+interface HeaderProps {
+  sections: { section_type: string }[];
+}
+
+export const Header: React.FC<HeaderProps> = ({ sections }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -27,7 +31,7 @@ export const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <Navigation />
+          <Navigation sections={sections} />
 
           {/* Mobile Menu Button */}
           <button
@@ -41,7 +45,7 @@ export const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-b border-gray-200 shadow-lg">
-            <Navigation isMobile onItemClick={() => setIsMenuOpen(false)} />
+            <Navigation sections={sections} isMobile onItemClick={() => setIsMenuOpen(false)} />
           </div>
         )}
       </div>

@@ -1,11 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
 
-export const getResumeUrl = async (): Promise<string> => {
+export const getResumeUrl = async (filename = "resume.pdf"): Promise<string> => {
   const supabase = await createClient();
-  
-  const { data } = await supabase.storage
-    .from('assets')
-    .getPublicUrl('resume.pdf');
+
+  const { data } = supabase.storage
+    .from("assets")
+    .getPublicUrl(filename);
+
+  if (!data?.publicUrl) {
+    throw new Error("Failed to fetch resume public URL from Supabase.");
+  }
 
   return data.publicUrl;
-}
+};

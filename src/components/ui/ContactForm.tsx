@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send, CheckCircle } from 'lucide-react';
+import { Send, CheckCircle, AlertTriangle } from 'lucide-react';
 
 interface ContactFormData {
   name: string;
@@ -19,6 +19,7 @@ export const ContactForm: React.FC = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -30,6 +31,7 @@ export const ContactForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMsg('');
 
     try {
       const res = await fetch('/api/contact', {
@@ -41,15 +43,15 @@ export const ContactForm: React.FC = () => {
       if (res.ok) {
         setIsSubmitted(true);
         setFormData({ name: '', email: '', company: '', message: '' });
-
         setTimeout(() => {
           setIsSubmitted(false);
         }, 3000);
       } else {
-        console.error('Email send failed');
+        setErrorMsg('Failed to send message. Please try again later.');
       }
     } catch (err) {
       console.error(err);
+      setErrorMsg('An unexpected error occurred. Please try again.');
     }
 
     setIsSubmitting(false);
@@ -71,6 +73,12 @@ export const ContactForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {errorMsg && (
+        <div className="flex items-center bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+          <AlertTriangle className="h-5 w-5 mr-2" />
+          <span>{errorMsg}</span>
+        </div>
+      )}
       <div className="grid sm:grid-cols-2 gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">

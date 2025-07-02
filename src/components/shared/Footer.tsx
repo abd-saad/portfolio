@@ -3,24 +3,16 @@
 import React from 'react';
 import { Heart, Code, Coffee } from 'lucide-react';
 
-export const Footer = () => {
+interface FooterProps {
+  sections: { section_type: string }[];
+}
+
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export const Footer: React.FC<FooterProps> = ({ sections }) => {
   const currentYear = new Date().getFullYear();
-
-  const quickLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Contact', href: '#contact' }
-  ];
-
-//   const services = [
-//     'Cloud Architecture',
-//     'DevOps Consulting',
-//     'Infrastructure Automation',
-//     'CI/CD Implementation',
-//     'Monitoring & Logging',
-//     'Security & Compliance'
-//   ];
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -58,13 +50,13 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
+              {sections.map((section) => (
+                <li key={section.section_type}>
                   <button
-                    onClick={() => scrollToSection(link.href.substring(1))}
+                    onClick={() => scrollToSection(section.section_type)}
                     className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 transform inline-block"
                   >
-                    {link.name}
+                    {capitalize(section.section_type)}
                   </button>
                 </li>
               ))}
