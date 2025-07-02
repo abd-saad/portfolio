@@ -9,6 +9,72 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      certifications: {
+        Row: {
+          id: number
+          name: string
+          provider: string
+          sequence: number | null
+          year: string
+        }
+        Insert: {
+          id?: number
+          name: string
+          provider: string
+          sequence?: number | null
+          year: string
+        }
+        Update: {
+          id?: number
+          name?: string
+          provider?: string
+          sequence?: number | null
+          year?: string
+        }
+        Relationships: []
+      }
+      experiences: {
+        Row: {
+          achievements: Json | null
+          company: string
+          description: string | null
+          id: number
+          location: string | null
+          metrics: Json | null
+          period: string | null
+          sequence: number | null
+          technologies: Json | null
+          title: string
+          type: string | null
+        }
+        Insert: {
+          achievements?: Json | null
+          company: string
+          description?: string | null
+          id?: number
+          location?: string | null
+          metrics?: Json | null
+          period?: string | null
+          sequence?: number | null
+          technologies?: Json | null
+          title: string
+          type?: string | null
+        }
+        Update: {
+          achievements?: Json | null
+          company?: string
+          description?: string | null
+          id?: number
+          location?: string | null
+          metrics?: Json | null
+          period?: string | null
+          sequence?: number | null
+          technologies?: Json | null
+          title?: string
+          type?: string | null
+        }
+        Relationships: []
+      }
       home_sections: {
         Row: {
           enabled: boolean | null
@@ -36,6 +102,137 @@ export type Database = {
         }
         Relationships: []
       }
+      info: {
+        Row: {
+          address: string | null
+          created_at: string
+          fullname: string | null
+          id: number
+          phone_number: string | null
+          surname: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          fullname?: string | null
+          id?: number
+          phone_number?: string | null
+          surname?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          fullname?: string | null
+          id?: number
+          phone_number?: string | null
+          surname?: string | null
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          demo: string | null
+          description: string | null
+          github: string | null
+          highlights: Json | null
+          id: number
+          sequence: number | null
+          technologies: Json | null
+          title: string
+        }
+        Insert: {
+          demo?: string | null
+          description?: string | null
+          github?: string | null
+          highlights?: Json | null
+          id?: number
+          sequence?: number | null
+          technologies?: Json | null
+          title: string
+        }
+        Update: {
+          demo?: string | null
+          description?: string | null
+          github?: string | null
+          highlights?: Json | null
+          id?: number
+          sequence?: number | null
+          technologies?: Json | null
+          title?: string
+        }
+        Relationships: []
+      }
+      skill_categories: {
+        Row: {
+          id: number
+          title: string | null
+          type: Database["public"]["Enums"]["skills_type"] | null
+        }
+        Insert: {
+          id?: number
+          title?: string | null
+          type?: Database["public"]["Enums"]["skills_type"] | null
+        }
+        Update: {
+          id?: number
+          title?: string | null
+          type?: Database["public"]["Enums"]["skills_type"] | null
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          category_id: number | null
+          enabled: boolean | null
+          id: number
+          level: number | null
+          name: string | null
+        }
+        Insert: {
+          category_id?: number | null
+          enabled?: boolean | null
+          id?: number
+          level?: number | null
+          name?: string | null
+        }
+        Update: {
+          category_id?: number | null
+          enabled?: boolean | null
+          id?: number
+          level?: number | null
+          name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skills_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "skill_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_links: {
+        Row: {
+          href: string
+          icon: string
+          id: string
+          label: Database["public"]["Enums"]["social_label"]
+        }
+        Insert: {
+          href: string
+          icon: string
+          id?: string
+          label: Database["public"]["Enums"]["social_label"]
+        }
+        Update: {
+          href?: string
+          icon?: string
+          id?: string
+          label?: Database["public"]["Enums"]["social_label"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -50,6 +247,15 @@ export type Database = {
         | "certifications"
         | "experience"
         | "projects"
+        | "contact"
+      skills_type:
+        | "cloud"
+        | "containerization"
+        | "iac"
+        | "security"
+        | "monitoring"
+        | "version_control"
+      social_label: "GitHub" | "LinkedIn" | "Email"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -171,7 +377,17 @@ export const Constants = {
         "certifications",
         "experience",
         "projects",
+        "contact",
       ],
+      skills_type: [
+        "cloud",
+        "containerization",
+        "iac",
+        "security",
+        "monitoring",
+        "version_control",
+      ],
+      social_label: ["GitHub", "LinkedIn", "Email"],
     },
   },
 } as const

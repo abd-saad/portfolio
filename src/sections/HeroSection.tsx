@@ -1,32 +1,15 @@
 import React from "react";
-import { Github, Linkedin, Mail } from "lucide-react";
 import Image from "next/legacy/image";
-import { THomepage } from "@/types/homepage";
-import { ScrollButtons } from "@/components/ui";
+import { THomepage } from "@/types";
+import { ScrollButtons, SocialLinks } from "@/components/ui";
+import { getProfileImage } from "@/services";
 
 interface HeroSectionProps {
   content: THomepage;
 }
 
-const socialLinks = [
-  {
-    icon: Github,
-    href: "https://github.com/abd-saad",
-    label: "GitHub",
-  },
-  {
-    icon: Linkedin,
-    href: "https://www.linkedin.com/in/abdullah-saad-93a0181b3",
-    label: "LinkedIn",
-  },
-  {
-    icon: Mail,
-    href: "mailto:abdullah.sd48@gmail.com",
-    label: "Email",
-  },
-];
-
-export const HeroSection: React.FC<HeroSectionProps> = ({ content }) => {
+export const HeroSection: React.FC<HeroSectionProps> = async ({ content }) => {
+  const profileImage = await getProfileImage();
   return (
     <section
       id="about"
@@ -60,18 +43,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ content }) => {
 
             {/* Social Links */}
             <div className="flex justify-center lg:justify-start space-x-4">
-              {socialLinks.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-gray-600 hover:text-blue-600 hover:border-blue-600 hover:shadow-md transition-all duration-200 group"
-                  aria-label={label}
-                >
-                  <Icon className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                </a>
-              ))}
+              <SocialLinks />
             </div>
           </div>
 
@@ -79,12 +51,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ content }) => {
           <div className="relative lg:order-first order-last">
             <div className="w-80 h-80 mx-auto rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
               <Image
-                src="/profile.jpg"
+                src={profileImage ?? '/profile.jpg'}
                 alt="Profile"
                 layout="responsive"
                 width={320}
                 height={320}
                 className="object-cover"
+                priority
               />
             </div>
           </div>

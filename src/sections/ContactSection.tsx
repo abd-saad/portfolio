@@ -1,15 +1,19 @@
 import React from 'react';
 import { ContactForm, SocialLinks } from '@/components/ui';
+import { THomepage } from '@/types';
 
-export const ContactSection: React.FC = () => {
+interface ContactSectionProps {
+  content: THomepage;
+}
+
+export const ContactSection: React.FC<ContactSectionProps> = ({ content }) => {
   return (
     <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Let&apos;s Work Together</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">{content.title}</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Ready to optimize your infrastructure? Let&apos;s discuss how I can help scale your systems 
-            and streamline your deployment processes.
+            {content.subtitle}
           </p>
         </div>
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Header, Footer } from '@/components/shared'
+import { getHomepage } from '@/services/homepage'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,13 +15,8 @@ export const metadata: Metadata = {
     title: 'Abdullah Saad Portfolio - Devops Engineer',
     description: 'Professional DevOps Engineer specializing in cloud infrastructure, automation solutions, and scalable system architecture.',
     type: 'website',
-    url: 'https://devops-portfolio.com',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'DevOps Engineer Portfolio',
-    description: 'Cloud infrastructure expert with 1+ years of experience in DevOps automation and scalable solutions.',
-  },
+    url: 'https://abd-saad.vercel.app',
+  }
 }
 
 export default async function RootLayout({
@@ -28,6 +24,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Fetch enabled homepage sections for navigation/footer
+  const homepageSections = await getHomepage();
+  // Only pass section_type for navigation/footer, filter out undefined
+  const navSections = homepageSections
+    .filter(s => typeof s.section_type === 'string' && s.section_type !== 'hero')
+    .map(s => ({ section_type: s.section_type as string }));
+
   return (
     <html lang="en">
       <head>
@@ -44,31 +47,21 @@ export default async function RootLayout({
               "name": "Abdullah Saad",
               "jobTitle": "Senior DevOps Engineer",
               "description": "Experienced DevOps Engineer specializing in cloud infrastructure, automation, and scalable solutions",
-              "url": "https://devops-portfolio.com",
+              "url": "https://abd-saad.vercel.app",
               "sameAs": [
                 "https://github.com/abd-saad",
-                "https://linkedin.com/in/devops-engineer"
+                "https://linkedin.com/in/abdullah-saad-93a0181b3"
               ],
-              "knowsAbout": [
-                "AWS",
-                "Kubernetes",
-                "Docker",
-                "Terraform",
-                "CI/CD",
-                "Infrastructure as Code",
-                "Cloud Architecture",
-                "DevOps Automation"
-              ]
             })
           }}
         />
       </head>
       <body className={inter.className}>
-        <Header />
+        <Header sections={navSections} />
         <main className="min-h-screen">
           {children}
         </main>
-        <Footer />
+        <Footer sections={navSections} />
       </body>
     </html>
   )
