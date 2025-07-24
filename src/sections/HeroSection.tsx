@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { THomepage } from "@/types";
 import { ScrollButtons, SocialLinks } from "@/components/ui";
 import { getProfileImage } from "@/services";
@@ -53,11 +53,11 @@ export const HeroSection: React.FC<HeroSectionProps> = async ({ content }) => {
               <Image
                 src={profileImage ?? '/profile.jpg'}
                 alt="Profile"
-                layout="responsive"
                 width={320}
                 height={320}
-                className="object-cover"
                 priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           </div>

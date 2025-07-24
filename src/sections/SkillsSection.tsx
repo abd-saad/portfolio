@@ -19,6 +19,19 @@ interface SkillsSectionProps {
 
 export const SkillsSection = async ({ content }: SkillsSectionProps) => {
   const categories = await getSkillCategoriesWithSkills();
+  function getSkillLevelProps(level: string | null | undefined) {
+    switch (level) {
+      case "beginner":
+        return { label: "Beginner", bg: "bg-yellow-100 text-yellow-800" };
+      case "intermediate":
+        return { label: "Intermediate", bg: "bg-blue-100 text-blue-800" };
+      case "advanced":
+        return { label: "Advanced", bg: "bg-green-100 text-green-800" };
+      default:
+        return { label: "Not Rated", bg: "bg-gray-100 text-gray-500" };
+    }
+  }
+  
   return (
     <section id="skills" className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,23 +57,19 @@ export const SkillsSection = async ({ content }: SkillsSectionProps) => {
                   <h3 className="text-xl font-semibold text-gray-900">{category.title}</h3>
                 </div>
                 <div className="space-y-4">
-                  {category.skills.map((skill, skillIndex) => (
-                    <div key={skill.id} className="relative">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-700">{skill.name}</span>
-                        <span className="text-sm text-gray-500">{skill.level}%</span>
+                  {category.skills.map((skill) => {
+                    const { label, bg } = getSkillLevelProps(skill.level);
+                    return (
+                      <div key={skill.id} className="relative">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-medium text-gray-700">{skill.name}</span>
+                          <span className={`text-xs font-semibold px-2 py-1 rounded ${bg}`}>
+                            {label}
+                          </span>
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-gradient-to-r from-blue-600 to-teal-600 h-2 rounded-full transition-all duration-1000 ease-out"
-                          style={{
-                            width: `${skill.level}%`,
-                            animationDelay: `${(categoryIndex * 4 + skillIndex) * 200}ms`,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );

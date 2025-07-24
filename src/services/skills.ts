@@ -7,7 +7,7 @@ export type SkillCategoryWithSkills = {
   skills: {
     id: number;
     name: string | null;
-    level: number | null;
+    level: string | null;
   }[];
 };
 
