@@ -25,10 +25,9 @@ function isRateLimited(ip: string): boolean {
 function validateFields(fields: Record<string, unknown>): string | null {
   const { name, email, message } = fields;
   if (!name || typeof name !== 'string' || name.trim().length === 0) return 'Name is required';
-  if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Valid email is required';
+  if (!email || typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(email)) return 'Valid email is required';
   if (!message || typeof message !== 'string' || message.trim().length === 0) return 'Message is required';
   if (name.length > 100) return 'Name too long';
-  if (email.length > 254) return 'Email too long';
   if (message.length > 5000) return 'Message too long';
   return null;
 }
