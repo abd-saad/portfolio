@@ -1,3 +1,6 @@
+import { validateEnv } from '@/lib/env'
+validateEnv()
+
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'

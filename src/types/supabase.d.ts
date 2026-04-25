@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -16,25 +16,37 @@ export type Database = {
     Tables: {
       certifications: {
         Row: {
+          badge_image_url: string | null
+          credential_id: string | null
+          credential_url: string | null
           id: number
           name: string
           provider: string
           sequence: number | null
-          year: string
+          valid_from: string | null
+          valid_until: string | null
         }
         Insert: {
+          badge_image_url?: string | null
+          credential_id?: string | null
+          credential_url?: string | null
           id?: number
           name: string
           provider: string
           sequence?: number | null
-          year: string
+          valid_from?: string | null
+          valid_until?: string | null
         }
         Update: {
+          badge_image_url?: string | null
+          credential_id?: string | null
+          credential_url?: string | null
           id?: number
           name?: string
           provider?: string
           sequence?: number | null
-          year?: string
+          valid_from?: string | null
+          valid_until?: string | null
         }
         Relationships: []
       }
@@ -42,12 +54,9 @@ export type Database = {
         Row: {
           achievements: Json | null
           company: string
-          description: string | null
           id: number
           location: string | null
-          metrics: Json | null
           period: string | null
-          sequence: number | null
           technologies: Json | null
           title: string
           type: string | null
@@ -55,12 +64,9 @@ export type Database = {
         Insert: {
           achievements?: Json | null
           company: string
-          description?: string | null
           id?: number
           location?: string | null
-          metrics?: Json | null
           period?: string | null
-          sequence?: number | null
           technologies?: Json | null
           title: string
           type?: string | null
@@ -68,12 +74,9 @@ export type Database = {
         Update: {
           achievements?: Json | null
           company?: string
-          description?: string | null
           id?: number
           location?: string | null
-          metrics?: Json | null
           period?: string | null
-          sequence?: number | null
           technologies?: Json | null
           title?: string
           type?: string | null
@@ -104,33 +107,6 @@ export type Database = {
           sequence?: number
           subtitle?: string | null
           title?: string | null
-        }
-        Relationships: []
-      }
-      info: {
-        Row: {
-          address: string | null
-          created_at: string
-          fullname: string | null
-          id: number
-          phone_number: string | null
-          surname: string | null
-        }
-        Insert: {
-          address?: string | null
-          created_at?: string
-          fullname?: string | null
-          id?: number
-          phone_number?: string | null
-          surname?: string | null
-        }
-        Update: {
-          address?: string | null
-          created_at?: string
-          fullname?: string | null
-          id?: number
-          phone_number?: string | null
-          surname?: string | null
         }
         Relationships: []
       }

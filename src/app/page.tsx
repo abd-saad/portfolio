@@ -7,12 +7,12 @@ export default async function Home() {
   return (
     <>
       {homepage.map((homepageItem) => renderHomepage(homepageItem))}
-      <ContactSection content={homepage.find((item) => item.section_type === 'contact') ?? {}} />
     </>
   )
 }
 
 const renderHomepage = (homepage: THomepage) => {
+  console.log('Rendering homepage section:', homepage.section_type);
   switch (homepage.section_type) {
     case 'hero':
       return <HeroSection key={homepage.id} content={homepage} />;
@@ -24,6 +24,8 @@ const renderHomepage = (homepage: THomepage) => {
       return <ProjectSection key={homepage.id} content={homepage} />;
     case 'certifications':
       return <CertificationSection key={homepage.id} content={homepage} />;
+    case 'contact':
+      return <ContactSection key={homepage.id} content={homepage} />;
     default:
       return null;
   }

@@ -13,18 +13,31 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll()
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: {
+          name: string
+          value: string
+          options?: {
+            path?: string
+            expires?: Date
+            maxAge?: number
+            domain?: string
+            secure?: boolean
+            httpOnly?: boolean
+            sameSite?: 'strict' | 'lax' | 'none'
+          }
+        }[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             )
           } catch {
-            // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
+            // Handle any errors that may occur during cookie setting
+            console.error('Error occurred while setting cookies')
           }
         },
-      },
-    }
+        delete(name: string) {
+          cookieStore.delete(name)
+        },
+    }}
   )
 }

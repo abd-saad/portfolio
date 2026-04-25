@@ -1,27 +1,23 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*"
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**"
       },
       {
-        protocol: "http",
-        hostname: "*"
+        protocol: "https",
+        hostname: "images.credly.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.credly.com",
       }
     ]
   },
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname, 'src')
-    }
-    return config;
-  }
 };
 
 export default nextConfig;

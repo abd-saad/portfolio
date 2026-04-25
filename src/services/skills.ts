@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server';
+import { unstable_cache } from 'next/cache';
+import { createPublicClient } from '@/lib/supabase/public';
 
 export type SkillCategoryWithSkills = {
   id: number;
@@ -11,28 +12,29 @@ export type SkillCategoryWithSkills = {
   }[];
 };
 
-export const getSkillCategoriesWithSkills = async (): Promise<SkillCategoryWithSkills[]> => {
-  const supabase = await createClient();
+export const getSkillCategoriesWithSkills = unstable_cache(
+  async (): Promise<SkillCategoryWithSkills[]> => {
+    const supabase = createPublicClient();
 
-  // Fetch categories
-  const { data: categories, error: catError } = await supabase
-    .from('skill_categories')
-    .select('*')
-    .order('id', { ascending: true });
+    const { data: categories, error: catError } = await supabase
+      .from('skill_categories')
+      .select('*')
+      .order('id', { ascending: true });
 
-  if (catError || !categories) return [];
+    if (catError || !categories) return [];
 
-  // Fetch skills
-  const { data: skills, error: skillError } = await supabase
-    .from('skills')
-    .select('*')
-    .eq('enabled', true)
+    const { data: skills, error: skillError } = await supabase
+      .from('skills')
+      .select('*')
+      .eq('enabled', true);
 
-  if (skillError || !skills) return categories.map(cat => ({ ...cat, skills: [] }));
+    if (skillError || !skills) return categories.map((cat) => ({ ...cat, skills: [] }));
 
-  // Group skills by category
-  return categories.map(cat => ({
-    ...cat,
-    skills: skills.filter(skill => skill.category_id === cat.id),
-  }));
-}; 
+    return categories.map((cat) => ({
+      ...cat,
+      skills: skills.filter((skill) => skill.category_id === cat.id),
+    }));
+  },
+  ['skills'],
+  { revalidate: 3600, tags: ['skills'] }
+);

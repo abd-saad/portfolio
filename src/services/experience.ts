@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server';
+import { unstable_cache } from 'next/cache';
+import { createPublicClient } from '@/lib/supabase/public';
 
 export type Experience = {
   id: number;
@@ -7,11 +8,8 @@ export type Experience = {
   location: string;
   period: string;
   type: string;
-  description: string;
   achievements: string[];
   technologies: string[];
-  metrics: Record<string, string>;
-  sequence: number;
 };
 
 export type Project = {
@@ -25,44 +23,47 @@ export type Project = {
   sequence: number;
 };
 
-export const getExperiences = async (): Promise<Experience[]> => {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('experiences')
-    .select('*')
-    .order('sequence', { ascending: true });
+export const getExperiences = unstable_cache(
+  async (): Promise<Experience[]> => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from('experiences')
+      .select('*')
+      .order('id', { ascending: false });
 
-  if (error || !data) return [];
-  // Parse JSON fields
-  return data.map((exp) => ({
-    ...exp,
-    location: exp.location ?? '',
-    period: exp.period ?? '',
-    type: exp.type ?? '',
-    description: exp.description ?? '',
-    sequence: exp.sequence ?? 0,
-    achievements: Array.isArray(exp.achievements) ? exp.achievements : JSON.parse(exp.achievements as string),
-    technologies: Array.isArray(exp.technologies) ? exp.technologies : JSON.parse(exp.technologies as string),
-    metrics: typeof exp.metrics === 'object' ? exp.metrics : JSON.parse(exp.metrics as string),
-  }));
-};
+    if (error || !data) return [];
+    return data.map((exp) => ({
+      ...exp,
+      location: exp.location ?? '',
+      period: exp.period ?? '',
+      type: exp.type ?? '',
+      achievements: Array.isArray(exp.achievements) ? exp.achievements : JSON.parse((exp.achievements as string) ?? '[]'),
+      technologies: Array.isArray(exp.technologies) ? exp.technologies : JSON.parse((exp.technologies as string) ?? '[]'),
+    }));
+  },
+  ['experiences'],
+  { revalidate: 3600, tags: ['experiences'] }
+);
 
-export const getProjects = async (): Promise<Project[]> => {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('projects')
-    .select('*')
-    .order('sequence', { ascending: true });
+export const getProjects = unstable_cache(
+  async (): Promise<Project[]> => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('sequence', { ascending: true });
 
-  if (error || !data) return [];
-  // Parse JSON fields
-  return data.map((proj) => ({
-    ...proj,
-    description: proj.description ?? '',
-    sequence: proj.sequence ?? 0,
-    github: proj.github ?? '',
-    demo: proj.demo ?? '',
-    technologies: Array.isArray(proj.technologies) ? proj.technologies : JSON.parse(proj.technologies as string),
-    highlights: Array.isArray(proj.highlights) ? proj.highlights : JSON.parse(proj.highlights as string),
-  }));
-}; 
+    if (error || !data) return [];
+    return data.map((proj) => ({
+      ...proj,
+      description: proj.description ?? '',
+      sequence: proj.sequence ?? 0,
+      github: proj.github ?? '',
+      demo: proj.demo ?? '',
+      technologies: Array.isArray(proj.technologies) ? proj.technologies : JSON.parse((proj.technologies as string) ?? '[]'),
+      highlights: Array.isArray(proj.highlights) ? proj.highlights : JSON.parse((proj.highlights as string) ?? '[]'),
+    }));
+  },
+  ['projects'],
+  { revalidate: 3600, tags: ['projects'] }
+);

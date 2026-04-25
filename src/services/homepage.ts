@@ -1,26 +1,19 @@
-import { createClient } from "@/lib/supabase/server";
-import { THomepage } from "@/types/homepage";
+import { unstable_cache } from 'next/cache';
+import { createPublicClient } from '@/lib/supabase/public';
+import { THomepage } from '@/types/homepage';
 
-export const getHomepage = async (): Promise<THomepage[]> => {
-  const supabase = await createClient();
-
-  try {
+export const getHomepage = unstable_cache(
+  async (): Promise<THomepage[]> => {
+    const supabase = createPublicClient();
     const { data, error } = await supabase
-      .from("home_sections")
-      .select("*")
-      .is("enabled", true)
-      .order("sequence", { ascending: true });
+      .from('home_sections')
+      .select('*')
+      .is('enabled', true)
+      .order('sequence', { ascending: true });
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
     return data ?? [];
-  } catch (error: unknown) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("Failed to fetch homepage content:", error);
-    }
-    throw new Error(
-      typeof error === "object" && error && "message" in error
-        ? (error as { message?: string }).message || "Unknown error"
-        : "Supabase fetch failed"
-    );
-  }
-};
+  },
+  ['homepage'],
+  { revalidate: 3600, tags: ['homepage'] }
+);

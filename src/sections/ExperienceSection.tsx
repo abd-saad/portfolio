@@ -53,20 +53,11 @@ export const ExperienceSection = async ({ content }: ExperienceSectionProps) => 
                         {exp.type}
                       </div>
                     </div>
-                    {/* Metrics */}
-                    <div className="grid grid-cols-3 gap-4 mt-6">
-                      {Object.entries(exp.metrics).map(([key, value]) => (
-                        <div key={key} className="text-center p-3 bg-white rounded-lg border border-gray-200">
-                          <div className="text-lg font-bold text-blue-600">{value}</div>
-                          <div className="text-xs text-gray-500 capitalize">{key.replace('_', ' ')}</div>
-                        </div>
-                      ))}
-                    </div>
                   </div>
-                  {/* Description & Achievements */}
+                  {/* Achievements */}
                   <div className="lg:col-span-2">
-                    <p className="text-gray-600 mb-6 leading-relaxed">{exp.description}</p>
-                    <div className="mb-6">
+                    {exp.achievements && exp.achievements.length > 0 && (
+                      <div className="mb-6">
                       <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
                         <Award className="h-4 w-4 mr-2 text-orange-500" />
                         Key Achievements
@@ -79,8 +70,10 @@ export const ExperienceSection = async ({ content }: ExperienceSectionProps) => 
                           </li>
                         ))}
                       </ul>
-                    </div>
-                    <div>
+                      </div>
+                    )}
+                    {exp.technologies && exp.technologies.length > 0 && (
+                      <>
                       <h4 className="font-semibold text-gray-900 mb-3">Technologies Used</h4>
                       <div className="flex flex-wrap gap-2">
                         {exp.technologies.map((tech, i) => (
@@ -92,7 +85,8 @@ export const ExperienceSection = async ({ content }: ExperienceSectionProps) => 
                           </span>
                         ))}
                       </div>
-                    </div>
+                    </>
+                    )}
                   </div>
                 </div>
               </div>
