@@ -10,6 +10,7 @@
     "gen-types": "supabase gen types --project-id orttqnopuvnbraztyiiw > src/types/supabase.d.ts"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.50.2",
     "@tailwindcss/postcss": "^4.1.11",
@@ -17,7 +18,6 @@
     "@vercel/speed-insights": "^1.2.0",
     "lucide-react": "^0.516.0",
     "next": "15.3.3",
-    "nodemailer": "^7.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "resend": "^6.12.2"

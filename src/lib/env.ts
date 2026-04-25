@@ -4,6 +4,8 @@ const REQUIRED_ENV_VARS = [
   'CONTACT_EMAIL',
   'RESEND_API_KEY',
   'RESEND_EMAIL_FROM',
+  'SENTRY_DSN',
+  'SENTRY_AUTH_TOKEN',
 ] as const;
 
 export function validateEnv() {
