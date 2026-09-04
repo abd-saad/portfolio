@@ -1,0 +1,13 @@
+allowBuilds:
+  '@sentry/cli': true
+  sharp: true
+  unrs-resolver: true
+# Build scripts that pnpm is allowed to run during install.
+# Required for: sharp (Next.js image optimization), @sentry/cli (source map
+# upload), unrs-resolver (eslint resolver), supabase (CLI binary), esbuild.
+onlyBuiltDependencies:
+  - "@sentry/cli"
+  - sharp
+  - unrs-resolver
+  - supabase
+  - esbuild
