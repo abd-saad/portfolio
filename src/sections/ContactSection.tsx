@@ -1,5 +1,4 @@
 import React from 'react';
-import { Mail, ArrowUpRight } from 'lucide-react';
 import { ContactForm, SocialLinks } from '@/components/ui';
 import { THomepage } from '@/types';
 
@@ -9,43 +8,30 @@ interface ContactSectionProps {
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ content }) => {
   return (
-    <section id="contact" className="py-24 sm:py-32">
+    <section id="contact" className="proto-section">
       <div className="section-shell">
-        <div className="glass-panel overflow-hidden rounded-[2rem]">
-          <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="relative border-b border-white/10 p-7 sm:p-10 lg:border-b-0 lg:border-r lg:p-12">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/[0.08] via-transparent to-violet-500/[0.08]" />
-              <div className="relative z-10">
-                <span className="section-kicker">Contact</span>
-                <h2 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{content.title}</h2>
-                <p className="section-copy mt-5">{content.subtitle}</p>
+        <div className="overflow-hidden rounded-[32px] border border-[var(--line)] bg-[linear-gradient(145deg,var(--surface),var(--surface-2))] p-7 shadow-[var(--shadow)] sm:p-10">
+          <div className="grid gap-10 lg:grid-cols-[1fr_.85fr] lg:items-start">
+            <div>
+              <p className="proto-kicker">05 / Contact</p>
+              <h2 className="mt-3 max-w-[760px] text-[clamp(36px,6vw,68px)] font-[760] leading-none tracking-[-.055em] text-[var(--text)]">{content.title}</h2>
+              <p className="mt-[18px] max-w-[620px] text-[var(--muted)]">{content.subtitle}</p>
 
-                <div className="mt-9 rounded-2xl border border-white/10 bg-black/10 p-5">
-                  <div className="flex items-start gap-3">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyan-300/10 text-cyan-300">
-                      <Mail className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-white">Open to meaningful opportunities</p>
-                      <p className="mt-1 text-sm leading-6 text-slate-400">Infrastructure, platform engineering, cloud architecture, automation, and DevOps consulting.</p>
-                    </div>
-                  </div>
-                </div>
+              <p className="mt-6 max-w-[620px] leading-7 text-[var(--muted)]">
+                I&apos;m always interested in discussing new opportunities, whether it&apos;s optimizing existing infrastructure, building new cloud architectures, or consulting on DevOps best practices.
+              </p>
 
-                <div className="mt-8">
-                  <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Elsewhere</p>
-                  <SocialLinks />
-                </div>
+              <div className="mt-7">
+                <SocialLinks />
+              </div>
 
-                <div className="mt-8 flex items-center gap-2 text-xs font-medium text-emerald-300">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.7)]" />
-                  Available for new projects
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </div>
+              <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--muted)]">
+                <span className="h-2 w-2 rounded-full bg-[var(--accent)] shadow-[0_0_14px_var(--accent)]" />
+                Available for new projects and opportunities
               </div>
             </div>
 
-            <div className="bg-slate-950/30 p-7 sm:p-10 lg:p-12">
+            <div className="rounded-[20px] border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-6">
               <ContactForm />
             </div>
           </div>
