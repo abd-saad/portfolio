@@ -7,6 +7,7 @@ import {
   CertificationSection,
   SolutionsSection,
   BlogSection,
+  ComingSoonSection,
 } from '@/sections';
 import { getHomepage } from '@/services/homepage';
 import { THomepage } from '@/types/homepage';
@@ -18,6 +19,10 @@ export default async function Home() {
 }
 
 const renderHomepage = (homepage: THomepage) => {
+  if (homepage.enabled === false) {
+    return <ComingSoonSection key={homepage.id} content={homepage} />;
+  }
+
   switch (homepage.section_type) {
     case 'hero':
       return <HeroSection key={homepage.id} content={homepage} />;
