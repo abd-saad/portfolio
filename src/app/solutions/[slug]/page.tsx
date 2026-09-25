@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getSolutionBySlug } from '@/services';
+import { isHomepageSectionEnabled } from '@/services/homepage';
 import { MarkdownContent } from '@/components/ui/MarkdownContent';
 
 interface SolutionPageProps {
@@ -8,6 +9,9 @@ interface SolutionPageProps {
 }
 
 export async function generateMetadata({ params }: SolutionPageProps): Promise<Metadata> {
+  const enabled = await isHomepageSectionEnabled('solutions');
+  if (!enabled) return { title: 'Solutions coming soon | Abdullah Saad' };
+
   const { slug } = await params;
   const solution = await getSolutionBySlug(slug);
 
@@ -20,6 +24,9 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
 }
 
 export default async function SolutionDetailPage({ params }: SolutionPageProps) {
+  const enabled = await isHomepageSectionEnabled('solutions');
+  if (!enabled) redirect('/#solutions');
+
   const { slug } = await params;
   const solution = await getSolutionBySlug(slug);
   if (!solution) notFound();
