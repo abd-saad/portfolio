@@ -1,4 +1,7 @@
+"use client";
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ArrowLeft, Home, RefreshCw, ShieldAlert, Terminal } from 'lucide-react'
 
 type ErrorCode = 403 | 404 | 500 | 503
@@ -38,6 +41,7 @@ const copy: Record<ErrorCode, { eyebrow: string; title: string; description: str
 }
 
 export function ErrorState({ code, title, description, onRetry }: ErrorStateProps) {
+  const router = useRouter()
   const content = copy[code]
   const Icon = code === 403 ? ShieldAlert : Terminal
 
@@ -61,10 +65,10 @@ export function ErrorState({ code, title, description, onRetry }: ErrorStateProp
               Try again
             </button>
           ) : (
-            <Link className="proto-btn proto-btn-secondary" href="/" replace>
+            <button className="proto-btn proto-btn-secondary" type="button" onClick={() => router.back()}>
               <ArrowLeft size={16} aria-hidden="true" />
               Go back
-            </Link>
+            </button>
           )}
         </div>
       </div>
