@@ -1,5 +1,4 @@
 import React from 'react';
-import { Calendar, MapPin, Clock, CheckCircle2 } from 'lucide-react';
 import { getExperiences } from '@/services';
 import { THomepage } from '@/types';
 import { formatExperiencePeriod } from '@/helper/formatExperiencePeriod';
@@ -13,55 +12,48 @@ export const ExperienceSection = async ({ content }: ExperienceSectionProps) => 
   if (experiences.length === 0) return null;
 
   return (
-    <section id="experience" className="py-24 sm:py-32">
+    <section id="experience" className="proto-section">
       <div className="section-shell">
-        <div className="max-w-3xl">
-          <span className="section-kicker">Career</span>
-          <h2 className="section-title mt-5">{content.title}</h2>
-          <p className="section-copy mt-5">{content.subtitle}</p>
+        <div className="proto-section-head">
+          <div>
+            <p className="proto-kicker">02 / Experience</p>
+            <h2 className="proto-title">{content.title}</h2>
+          </div>
+          <p className="proto-intro">{content.subtitle}</p>
         </div>
 
-        <div className="relative mt-14 space-y-5 before:absolute before:bottom-8 before:left-[19px] before:top-8 before:w-px before:bg-gradient-to-b before:from-cyan-300/40 before:via-white/10 before:to-transparent sm:before:left-[23px]">
-          {experiences.map((exp, index) => {
+        <div className="border-t border-[var(--line)]">
+          {experiences.map((exp) => {
             const period = formatExperiencePeriod(exp.start, exp.end, exp.period);
             return (
-              <article key={exp.id} className="relative pl-14 sm:pl-16">
-                <div className="absolute left-0 top-7 grid h-10 w-10 place-items-center rounded-full border border-cyan-300/20 bg-slate-950 text-xs font-bold text-cyan-200 shadow-[0_0_30px_rgba(34,211,238,0.12)] sm:h-12 sm:w-12">
-                  {String(index + 1).padStart(2, '0')}
+              <article key={exp.id} className="grid gap-4 border-b border-[var(--line)] py-9 lg:grid-cols-[250px_1fr] lg:gap-11">
+                <div>
+                  {period.trim() && <div className="text-[13px] font-bold text-[var(--text)]">{period}</div>}
+                  {exp.location.trim() && <div className="mt-[7px] text-[13px] text-[var(--muted)]">{exp.location}</div>}
+                  {exp.type.trim() && <span className="mt-[13px] inline-block rounded-[7px] border border-[var(--line)] px-2 py-1 text-[11px] text-[var(--muted-2)]">{exp.type}</span>}
                 </div>
 
-                <div className="glass-panel rounded-3xl p-6 sm:p-8">
-                  <div className="grid gap-7 lg:grid-cols-[0.8fr_1.2fr]">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">{exp.company}</p>
-                      <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">{exp.title}</h3>
-                      <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500">
-                        {exp.location.trim() && <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4" />{exp.location}</span>}
-                        {period.trim() && <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4" />{period}</span>}
-                        {exp.type.trim() && <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4" />{exp.type}</span>}
-                      </div>
-                    </div>
+                <div>
+                  <h3 className="m-0 text-[26px] font-semibold tracking-[-.035em] text-[var(--text)]">{exp.title}</h3>
+                  <div className="mt-1 text-[13px] font-bold text-[var(--accent)]">{exp.company}</div>
 
-                    <div>
-                      {exp.achievements.length > 0 && (
-                        <ul className="space-y-3">
-                          {exp.achievements.map((achievement, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm leading-6 text-slate-300">
-                              <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-emerald-300" />
-                              <span>{achievement}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      {exp.technologies.length > 0 && (
-                        <div className="mt-6 flex flex-wrap gap-2">
-                          {exp.technologies.map((tech, i) => (
-                            <span key={i} className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-slate-300">{tech}</span>
-                          ))}
-                        </div>
-                      )}
+                  {exp.achievements.length > 0 && (
+                    <ul className="mt-5 grid list-none gap-2.5 p-0">
+                      {exp.achievements.map((achievement, index) => (
+                        <li key={index} className="relative pl-5 text-[var(--muted)] before:absolute before:left-0.5 before:top-[.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--accent)] before:opacity-75">
+                          {achievement}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {exp.technologies.length > 0 && (
+                    <div className="mt-5 flex flex-wrap gap-[7px]">
+                      {exp.technologies.map((tech, index) => (
+                        <span key={index} className="rounded-lg border border-[var(--line)] bg-[var(--surface)] px-2 py-1 text-[11px] font-semibold text-[var(--muted)]">{tech}</span>
+                      ))}
                     </div>
-                  </div>
+                  )}
                 </div>
               </article>
             );
