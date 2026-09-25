@@ -36,7 +36,7 @@ export const Navigation: React.FC<NavigationProps> = ({ sections, isMobile = fal
   }
 
   return (
-    <nav className="hidden md:flex items-center space-x-8">
+    <nav className="hidden md:flex items-center space-x-8 invisible">
       {sections.map((section) => (
         <button
           key={section.section_type}

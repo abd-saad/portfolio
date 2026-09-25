@@ -2,14 +2,12 @@ import React from "react";
 import Image from "next/image";
 import { THomepage } from "@/types";
 import { ScrollButtons, SocialLinks } from "@/components/ui";
-import { getProfileImage } from "@/services";
 
 interface HeroSectionProps {
   content: THomepage;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = async ({ content }) => {
-  const profileImage = await getProfileImage();
   return (
     <section
       id="about"
@@ -51,7 +49,8 @@ export const HeroSection: React.FC<HeroSectionProps> = async ({ content }) => {
           <div className="relative lg:order-first order-last">
             <div className="w-80 h-80 mx-auto rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
               <Image
-                src={profileImage ?? '/profile.jpg'}
+                src="/api/profile-image"
+                unoptimized
                 alt="Profile"
                 width={320}
                 height={320}

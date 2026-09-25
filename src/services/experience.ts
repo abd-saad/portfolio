@@ -1,5 +1,7 @@
 import { unstable_cache } from 'next/cache';
 import { createPublicClient } from '@/lib/supabase/public';
+import { captureException } from '@sentry/nextjs';
+import { normalizeStringArray } from '@/helper/normalizeStringArray';
 
 export type Experience = {
   id: number;
@@ -7,6 +9,8 @@ export type Experience = {
   company: string;
   location: string;
   period: string;
+  start: string | null;
+  end: string | null;
   type: string;
   achievements: string[];
   technologies: string[];
@@ -29,16 +33,20 @@ export const getExperiences = unstable_cache(
     const { data, error } = await supabase
       .from('experiences')
       .select('*')
-      .order('id', { ascending: false });
+      .order('end', { ascending: false });
 
-    if (error || !data) return [];
-    return data.map((exp) => ({
+    if (error) {
+      const failure = new Error('Failed to load experiences', { cause: error });
+      captureException(failure);
+      throw failure;
+    }
+    return (data ?? []).map((exp) => ({
       ...exp,
       location: exp.location ?? '',
       period: exp.period ?? '',
       type: exp.type ?? '',
-      achievements: Array.isArray(exp.achievements) ? exp.achievements : JSON.parse((exp.achievements as string) ?? '[]'),
-      technologies: Array.isArray(exp.technologies) ? exp.technologies : JSON.parse((exp.technologies as string) ?? '[]'),
+      achievements: normalizeStringArray(exp.achievements),
+      technologies: normalizeStringArray(exp.technologies),
     }));
   },
   ['experiences'],
@@ -60,8 +68,8 @@ export const getProjects = unstable_cache(
       sequence: proj.sequence ?? 0,
       github: proj.github ?? '',
       demo: proj.demo ?? '',
-      technologies: Array.isArray(proj.technologies) ? proj.technologies : JSON.parse((proj.technologies as string) ?? '[]'),
-      highlights: Array.isArray(proj.highlights) ? proj.highlights : JSON.parse((proj.highlights as string) ?? '[]'),
+      technologies: normalizeStringArray(proj.technologies),
+      highlights: normalizeStringArray(proj.highlights),
     }));
   },
   ['projects'],

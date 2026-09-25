@@ -1,8 +1,5 @@
-import { createPublicClient } from '@/lib/supabase/public';
+import { signStorageAsset } from '@/services/storage';
 
-export const getResumeUrl = (filename = 'resume.pdf'): string => {
-  const supabase = createPublicClient();
-  const { data } = supabase.storage.from('assets').getPublicUrl(filename);
-  if (!data?.publicUrl) throw new Error('Failed to fetch resume public URL from Supabase.');
-  return data.publicUrl;
+export const getResumeUrl = async (filename = 'resume.pdf'): Promise<string> => {
+  return signStorageAsset('assets', filename, true);
 };

@@ -1,7 +1,5 @@
-import { createPublicClient } from '@/lib/supabase/public';
+import { signStorageAsset } from '@/services/storage';
 
-export const getProfileImage = (): string => {
-  const supabase = createPublicClient();
-  const { data } = supabase.storage.from('assets').getPublicUrl('profile.jpg');
-  return data.publicUrl;
+export const getProfileImage = async (): Promise<string> => {
+  return signStorageAsset('assets', 'profile.jpg');
 };

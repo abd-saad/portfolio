@@ -4,6 +4,7 @@ import { Shield, ExternalLink } from 'lucide-react';
 import { getCertifications } from '@/services';
 import { THomepage } from '@/types';
 import { convertDate } from '@/helper';
+import { getBadgeImageSrc } from '@/helper/storageUrl';
 
 interface CertificationSectionProps {
   content: THomepage;
@@ -20,16 +21,19 @@ export const CertificationSection = async ({ content }: CertificationSectionProp
           <p className="text-lg text-gray-600">{content.subtitle}</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {certifications.map((cert, index) => (
+          {certifications.map((cert, index) => {
+            const badgeSrc = getBadgeImageSrc(cert.id, cert.badge_image_url, process.env.NEXT_PUBLIC_SUPABASE_URL);
+            return (
             <div
               key={cert.id}
               className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group hover:-translate-y-1"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                {cert.credential_url && cert.credential_id ? (
+                {badgeSrc ? (
                   <Image
-                    src={`${cert.badge_image_url}`}
+                    src={badgeSrc}
+                    unoptimized={badgeSrc.startsWith('/api/')}
                     alt={cert.name}
                     width={64}
                     height={64}
@@ -59,7 +63,8 @@ export const CertificationSection = async ({ content }: CertificationSectionProp
                 </a>
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
