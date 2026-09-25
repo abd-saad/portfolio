@@ -1,8 +1,7 @@
-import { NextResponse } from 'next/server';
 import { createPublicClient } from '@/lib/supabase/public';
 import { parseStorageObjectUrl } from '@/helper/storageUrl';
 import { signStorageAsset, StorageAssetError } from '@/services/storage';
-import { storageErrorResponse, storageHeaders } from '@/lib/storageResponse';
+import { storageErrorResponse, storageImageResponse } from '@/lib/storageResponse';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +15,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const asset = parseStorageObjectUrl(data?.badge_image_url ?? null, process.env.NEXT_PUBLIC_SUPABASE_URL);
     if (!asset) throw new StorageAssetError(404);
     const url = await signStorageAsset(asset.bucket, asset.path);
-    return NextResponse.redirect(url, { status: 307, headers: storageHeaders });
+    return await storageImageResponse(url);
   } catch (error) {
     return storageErrorResponse(error);
   }

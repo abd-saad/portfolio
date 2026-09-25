@@ -1,8 +1,8 @@
-'use client';
+import 'server-only';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Mail } from 'lucide-react';
-import { fetchSocialLinks, SocialLink } from '@/services/socialLinks';
+import { fetchSocialLinks } from '@/services/socialLinks';
 
 // lucide-react v1 removed brand icons (Github, Linkedin) for trademark
 // reasons, so we ship small inline SVGs that accept the same className API.
@@ -36,12 +36,8 @@ const iconMap: Record<string, React.ElementType> = {
   Email: Mail,
 };
 
-export const SocialLinks: React.FC = () => {
-  const [links, setLinks] = useState<SocialLink[]>([]);
-
-  useEffect(() => {
-    fetchSocialLinks().then(setLinks);
-  }, []);
+export const SocialLinks = async () => {
+  const links = await fetchSocialLinks();
 
   return (
     <div className="flex space-x-4">

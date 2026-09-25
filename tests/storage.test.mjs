@@ -74,9 +74,11 @@ test('signs for five minutes with explicit download disposition', async () => {
   const resume = load('src/services/resume.ts', { '@/services/storage': api });
   const hero = load('src/services/hero.ts', { '@/services/storage': api });
   assert.equal(await resume.getResumeUrl(), 'https://signed.example/file');
+  await resume.getResumeUrl('resume.pdf', false);
   await hero.getProfileImage();
   assert.deepEqual(calls, [
     ['assets', 'resume.pdf', 300, { download: true }],
+    ['assets', 'resume.pdf', 300, { download: false }],
     ['assets', 'profile.jpg', 300, { download: false }],
   ]);
 });
@@ -105,21 +107,22 @@ test('résumé route awaits signing and returns uncached JSON, including failure
     '@/services/resume': { getResumeUrl: async () => 'https://signed.example/resume' },
     '@/lib/storageResponse': responses,
   });
-  const response = await route.GET();
+  const response = await route.GET(new Request('http://localhost/api/resume'));
   assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.deepEqual(await response.json(), { url: 'https://signed.example/resume' });
   const failed = load('src/app/api/resume/route.ts', {
     '@/services/resume': { getResumeUrl: async () => { throw new Error('secret token'); } },
     '@/lib/storageResponse': responses,
   });
-  const failure = await failed.GET();
+  const failure = await failed.GET(new Request('http://localhost/api/resume'));
   assert.equal(failure.status, 500);
   assert.equal(failure.headers.get('cache-control'), 'no-store');
   assert.deepEqual(await failure.json(), { error: 'Unable to load asset' });
   assert.ok(reports.every(error => !error.message.includes('secret token')));
 });
 
-test('profile route signs on every request and returns uncached redirects', async () => {
+test('profile route signs on every request and returns image responses', async t => {
+  t.mock.method(globalThis, 'fetch', async () => new Response('image', { headers: { 'content-type': 'image/png' } }));
   let count = 0;
   const route = load('src/app/api/profile-image/route.ts', {
     '@/services/hero': { getProfileImage: async () => `https://signed.example/profile?token=${++count}` },
@@ -127,12 +130,14 @@ test('profile route signs on every request and returns uncached redirects', asyn
   });
   const first = await route.GET();
   const second = await route.GET();
-  assert.equal(first.status, 307);
-  assert.equal(first.headers.get('cache-control'), 'no-store');
-  assert.notEqual(first.headers.get('location'), second.headers.get('location'));
+  assert.equal(first.status, 200);
+  assert.equal(first.headers.get('cache-control'), 'public, max-age=3600, s-maxage=3600');
+  assert.equal(await second.text(), 'image');
+  assert.equal(count, 2);
 });
 
 test('badge route signs only a stored same-project path and rejects invalid IDs and sources', async t => {
+  t.mock.method(globalThis, 'fetch', async () => new Response('badge', { headers: { 'content-type': 'image/png' } }));
   setEnv(t, 'NEXT_PUBLIC_SUPABASE_URL', project);
   let value = `${project}/storage/v1/object/sign/assets/badge.png?token=expired`;
   let databaseError = null;
@@ -147,8 +152,9 @@ test('badge route signs only a stored same-project path and rejects invalid IDs 
   });
   const request = id => route.GET(new Request('http://localhost/api/certifications/7/badge?path=secret'), { params: Promise.resolve({ id }) });
   const response = await request('7');
-  assert.equal(response.status, 307);
-  assert.equal(response.headers.get('cache-control'), 'no-store');
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('cache-control'), 'public, max-age=3600, s-maxage=3600');
+  assert.equal(await response.text(), 'badge');
   assert.deepEqual(signed, [['assets', 'badge.png']]);
   for (const id of ['../secret', '1.5', '9007199254740993']) assert.equal((await request(id)).status, 404);
   for (const source of [null, 'https://foreign.supabase.co/storage/v1/object/public/assets/a.png', 'https://images.credly.com/a.png']) {
@@ -188,7 +194,9 @@ test('cached section markup uses stable image routes and preserves external badg
   const content = { title: 'Title', subtitle: 'Subtitle' };
   const heroHtml = renderToStaticMarkup(await hero.HeroSection({ content }));
   assert.equal(images[0].src, '/api/profile-image');
-  assert.equal(images[0].unoptimized, true);
+  assert.equal(images[0].unoptimized, undefined);
+  assert.equal(images[0].preload, true);
+  assert.equal(images[0].sizes, '320px');
   assert.doesNotMatch(heroHtml, /token=|object\/public/);
   const badges = load('src/sections/CertificationSection.tsx', {
     'next/image': imageMock,
@@ -203,8 +211,114 @@ test('cached section markup uses stable image routes and preserves external badg
   const html = renderToStaticMarkup(await badges.CertificationSection({ content }));
   assert.equal(images.length, 3);
   assert.equal(images[1].src, '/api/certifications/1/badge');
-  assert.equal(images[1].unoptimized, true);
-  assert.equal(images[2].unoptimized, false);
+  assert.equal(images[1].unoptimized, undefined);
+  assert.equal(images[1].loading, 'lazy');
+  assert.equal(images[1].sizes, '64px');
+  assert.equal(images[2].unoptimized, undefined);
   assert.doesNotMatch(html, /token=|expired|object\/public/);
   assert.match(html, /lucide-shield/);
+});
+
+test('resume preview redirects freshly, download stays JSON, and invalid modes never sign', async () => {
+  const calls = [];
+  const route = load('src/app/api/resume/route.ts', {
+    '@/services/resume': { getResumeUrl: async (...args) => {
+      calls.push(args);
+      return 'https://signed.example/resume?token=' + calls.length;
+    } },
+    '@/lib/storageResponse': responses,
+  });
+  const request = mode => route.GET(new Request('http://localhost/api/resume?mode=' + mode));
+  const preview = await request('preview');
+  const next = await request('preview');
+  assert.equal(preview.status, 307);
+  assert.equal(preview.headers.get('cache-control'), 'no-store');
+  assert.notEqual(preview.headers.get('location'), next.headers.get('location'));
+  const download = await request('download');
+  assert.equal(download.status, 200);
+  assert.equal(download.headers.get('cache-control'), 'no-store');
+  assert.ok((await download.json()).url);
+  assert.deepEqual(calls, [['resume.pdf', false], ['resume.pdf', false], ['resume.pdf', true]]);
+  const invalid = await request('other');
+  assert.equal(invalid.status, 400);
+  assert.equal(invalid.headers.get('cache-control'), 'no-store');
+  assert.equal(calls.length, 3);
+  const failed = load('src/app/api/resume/route.ts', {
+    '@/services/resume': { getResumeUrl: async () => { throw new storage.StorageAssetError(404); } },
+    '@/lib/storageResponse': responses,
+  });
+  const missing = await failed.GET(new Request('http://localhost/api/resume?mode=preview'));
+  assert.equal(missing.status, 404);
+  assert.equal(missing.headers.get('cache-control'), 'no-store');
+  assert.deepEqual(await missing.json(), { error: 'Asset not found' });
+});
+
+test('social links query on the server, cache successes, and recover after sanitized failures', async () => {
+  let failure = true;
+  let data = [{ id: '1', href: 'https://example.com', icon: 'Github', label: 'GitHub' }];
+  const calls = [];
+  const errors = [];
+  let cachedQuery;
+  const service = load('src/services/socialLinks.ts', {
+    'next/cache': { unstable_cache: (fn, keys, options) => {
+      assert.deepEqual(keys, ['social-links']);
+      assert.equal(options.revalidate, 3600);
+      cachedQuery = fn;
+      return fn;
+    } },
+    '@sentry/nextjs': { captureException: error => errors.push(error) },
+    '@/lib/supabase/public': { createPublicClient: () => ({
+      from: table => {
+        calls.push(table);
+        return { select: () => ({ eq: (column, value) => {
+          calls.push([column, value]);
+          return { order: async (column, options) => {
+            calls.push([column, options]);
+            return { data, error: failure ? { message: 'private provider detail' } : null };
+          } };
+        } }) };
+      },
+    }) },
+  });
+  assert.deepEqual(await service.fetchSocialLinks(), []);
+  await assert.rejects(cachedQuery(), /Unable to load social links/);
+  assert.equal(errors.length, 1);
+  assert.equal(errors[0].message, 'Unable to load social links');
+  failure = false;
+  assert.deepEqual(await service.fetchSocialLinks(), data);
+  assert.deepEqual(calls.slice(0, 3), ['social_links', ['enabled', true], ['id', { ascending: true }]]);
+  const component = load('src/components/ui/SocialLinks.tsx', {
+    '@/services/socialLinks': service,
+  });
+  const html = renderToStaticMarkup(await component.SocialLinks());
+  assert.match(html, /href="https:\/\/example.com"/);
+  assert.match(html, /GitHub/);
+  data = [];
+  assert.doesNotMatch(renderToStaticMarkup(await component.SocialLinks()), /<a /);
+});
+
+test('image proxy forwards only image bytes and safe headers; failures stay uncached', async t => {
+  let upstream = new Response('pixels', { headers: {
+    'content-type': 'image/webp', 'set-cookie': 'private=value', location: 'https://private.example/token',
+  } });
+  t.mock.method(globalThis, 'fetch', async (_url, options) => {
+    assert.equal(options.cache, 'no-store');
+    return upstream;
+  });
+  const image = await responses.storageImageResponse('https://signed.example/image');
+  assert.equal(await image.text(), 'pixels');
+  assert.equal(image.headers.get('content-type'), 'image/webp');
+  assert.equal(image.headers.get('set-cookie'), null);
+  assert.equal(image.headers.get('location'), null);
+  for (const [status, type, expected] of [[404, 'text/plain', 404], [503, 'text/plain', 500], [200, 'text/html', 500]]) {
+    upstream = new Response('private details', { status, headers: { 'content-type': type } });
+    const route = load('src/app/api/profile-image/route.ts', {
+      '@/services/hero': { getProfileImage: async () => 'https://signed.example/image' },
+      '@/lib/storageResponse': responses,
+    });
+    const result = await route.GET();
+    assert.equal(result.status, expected);
+    assert.equal(result.headers.get('cache-control'), 'no-store');
+    assert.doesNotMatch(await result.text(), /private details/);
+  }
 });

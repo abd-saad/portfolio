@@ -1,3 +1,4 @@
+import 'server-only';
 import { getHomepage } from './homepage';
 import { getProfileImage } from './hero';
 import { getExperiences } from './experience';

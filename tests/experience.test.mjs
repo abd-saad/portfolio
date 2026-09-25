@@ -15,7 +15,7 @@ function load(file, mocks = {}) {
   });
   const loaded = { exports: {} };
   new Function('require', 'module', 'exports', outputText)(
-    (id) => Object.hasOwn(mocks, id) ? mocks[id] : loadDependency(id), loaded, loaded.exports,
+    (id) => id === 'server-only' ? {} : Object.hasOwn(mocks, id) ? mocks[id] : loadDependency(id), loaded, loaded.exports,
   );
   return loaded.exports;
 }

@@ -33,7 +33,8 @@ export const CertificationSection = async ({ content }: CertificationSectionProp
                 {badgeSrc ? (
                   <Image
                     src={badgeSrc}
-                    unoptimized={badgeSrc.startsWith('/api/')}
+                    sizes="64px"
+                    loading="lazy"
                     alt={cert.name}
                     width={64}
                     height={64}

@@ -36,11 +36,8 @@ export const HeroSection: React.FC<HeroSectionProps> = async ({ content }) => {
               {content.subtitle}
             </p>
 
-            {/* Buttons (client component) */}
-            <ScrollButtons />
-
-            {/* Social Links */}
-            <div className="flex justify-center lg:justify-start space-x-4">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <ScrollButtons />
               <SocialLinks />
             </div>
           </div>
@@ -50,13 +47,12 @@ export const HeroSection: React.FC<HeroSectionProps> = async ({ content }) => {
             <div className="w-80 h-80 mx-auto rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
               <Image
                 src="/api/profile-image"
-                unoptimized
                 alt="Profile"
                 width={320}
                 height={320}
-                priority
+                preload
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                sizes="320px"
               />
             </div>
           </div>

@@ -1,3 +1,4 @@
+import 'server-only';
 import { signStorageAsset } from '@/services/storage';
 
 export const getProfileImage = async (): Promise<string> => {

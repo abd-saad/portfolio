@@ -16,3 +16,20 @@ export function storageErrorResponse(error: unknown) {
     { status, headers: storageHeaders },
   );
 }
+
+// Buffer before responding so upstream failures still produce sanitized, uncached errors.
+export async function storageImageResponse(url: string) {
+  const response = await fetch(url, { cache: 'no-store' });
+  if (!response.ok) throw new StorageAssetError(response.status === 404 ? 404 : 500);
+  const contentType = response.headers.get('content-type')?.split(';')[0].trim().toLowerCase();
+  if (!contentType || !['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif'].includes(contentType)) {
+    throw new StorageAssetError(500);
+  }
+  return new Response(await response.arrayBuffer(), {
+    headers: {
+      'Content-Type': contentType,
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+      'X-Content-Type-Options': 'nosniff',
+    },
+  });
+}
