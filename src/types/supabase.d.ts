@@ -14,6 +14,130 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      blog_post_categories: {
+        Row: {
+          blog_post_id: string
+          category_id: string
+        }
+        Insert: {
+          blog_post_id: string
+          category_id: string
+        }
+        Update: {
+          blog_post_id?: string
+          category_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_post_categories_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_post_categories_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "published_blog_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_post_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "blog_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_posts: {
+        Row: {
+          content: string
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string | null
+          featured: boolean
+          id: string
+          meta_description: string | null
+          meta_title: string | null
+          published_at: string | null
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          featured?: boolean
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          featured?: boolean
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cache_invalidation_events: {
+        Row: {
+          cache_tag: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          cache_tag: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          cache_tag?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       certifications: {
         Row: {
           badge_image_url: string | null
@@ -223,9 +347,267 @@ export type Database = {
         }
         Relationships: []
       }
+      solution_sections: {
+        Row: {
+          content: string | null
+          created_at: string
+          data: Json
+          id: string
+          position: number
+          section_type: string
+          solution_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          data?: Json
+          id?: string
+          position?: number
+          section_type?: string
+          solution_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          data?: Json
+          id?: string
+          position?: number
+          section_type?: string
+          solution_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "solution_sections_solution_id_fkey"
+            columns: ["solution_id"]
+            isOneToOne: false
+            referencedRelation: "published_solutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "solution_sections_solution_id_fkey"
+            columns: ["solution_id"]
+            isOneToOne: false
+            referencedRelation: "solutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      solution_technologies: {
+        Row: {
+          solution_id: string
+          technology_id: string
+        }
+        Insert: {
+          solution_id: string
+          technology_id: string
+        }
+        Update: {
+          solution_id?: string
+          technology_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "solution_technologies_solution_id_fkey"
+            columns: ["solution_id"]
+            isOneToOne: false
+            referencedRelation: "published_solutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "solution_technologies_solution_id_fkey"
+            columns: ["solution_id"]
+            isOneToOne: false
+            referencedRelation: "solutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "solution_technologies_technology_id_fkey"
+            columns: ["technology_id"]
+            isOneToOne: false
+            referencedRelation: "technologies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      solutions: {
+        Row: {
+          architecture_image_url: string | null
+          category: string | null
+          cover_image_url: string | null
+          created_at: string
+          demo_url: string | null
+          excerpt: string | null
+          featured: boolean
+          github_url: string | null
+          id: string
+          published_at: string | null
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          architecture_image_url?: string | null
+          category?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          demo_url?: string | null
+          excerpt?: string | null
+          featured?: boolean
+          github_url?: string | null
+          id?: string
+          published_at?: string | null
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          architecture_image_url?: string | null
+          category?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          demo_url?: string | null
+          excerpt?: string | null
+          featured?: boolean
+          github_url?: string | null
+          id?: string
+          published_at?: string | null
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      technologies: {
+        Row: {
+          category: string | null
+          created_at: string
+          icon_url: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          icon_url?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          icon_url?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      published_blog_posts: {
+        Row: {
+          content: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          excerpt: string | null
+          featured: boolean | null
+          id: string | null
+          meta_description: string | null
+          meta_title: string | null
+          published_at: string | null
+          slug: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          excerpt?: string | null
+          featured?: boolean | null
+          id?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          excerpt?: string | null
+          featured?: boolean | null
+          id?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      published_solutions: {
+        Row: {
+          architecture_image_url: string | null
+          category: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          demo_url: string | null
+          excerpt: string | null
+          featured: boolean | null
+          github_url: string | null
+          id: string | null
+          published_at: string | null
+          slug: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          architecture_image_url?: string | null
+          category?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          demo_url?: string | null
+          excerpt?: string | null
+          featured?: boolean | null
+          github_url?: string | null
+          id?: string | null
+          published_at?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          architecture_image_url?: string | null
+          category?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          demo_url?: string | null
+          excerpt?: string | null
+          featured?: boolean | null
+          github_url?: string | null
+          id?: string | null
+          published_at?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
@@ -239,6 +621,8 @@ export type Database = {
         | "experience"
         | "projects"
         | "contact"
+        | "solutions"
+        | "blog"
       skills_type:
         | "cloud"
         | "containerization"
@@ -382,6 +766,8 @@ export const Constants = {
         "experience",
         "projects",
         "contact",
+        "solutions",
+        "blog",
       ],
       skills_type: [
         "cloud",

@@ -5,6 +5,10 @@ import { EmailTemplate } from '@/components/ui/EmailTemplate';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Resend's free/testing sender works without owning a custom domain.
+// Once a domain is verified, RESEND_EMAIL_FROM can override this value.
+const RESEND_EMAIL_FROM = process.env.RESEND_EMAIL_FROM || 'Portfolio Contact <onboarding@resend.dev>';
+
 // Simple in-memory rate limiter: max 3 requests per IP per 10 minutes
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 3;
@@ -51,9 +55,16 @@ export async function POST(req: NextRequest) {
   const safeCompany = company ? String(company).trim() : undefined;
   const safeMessage = String(message).trim();
 
+  const contactEmail = process.env.CONTACT_EMAIL;
+  if (!contactEmail) {
+    console.error('CONTACT_EMAIL is not configured');
+    return NextResponse.json({ error: 'Contact form is not configured' }, { status: 500 });
+  }
+
   const { error } = await resend.emails.send({
-    from: process.env.RESEND_EMAIL_FROM!,
-    to: [process.env.CONTACT_EMAIL!],
+    from: RESEND_EMAIL_FROM,
+    to: [contactEmail],
+    replyTo: safeEmail,
     subject: `New message from ${safeName}`,
     html: EmailTemplate({ name: safeName, email: safeEmail, company: safeCompany, message: safeMessage }),
   });

@@ -58,15 +58,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch enabled homepage sections for navigation/footer
   const homepageSections = await getHomepage();
-  // Only pass section_type for navigation/footer, filter out undefined
   const navSections = homepageSections
     .filter(s => typeof s.section_type === 'string' && s.section_type !== 'hero')
-    .map(s => ({ section_type: s.section_type as string }));
+    .map(s => ({
+      section_type: s.section_type as string,
+      enabled: s.enabled === true,
+    }));
 
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" data-scroll-behavior="smooth">
       <head>
         <script type="application/ld+json">
           {JSON.stringify(jsonLd)}

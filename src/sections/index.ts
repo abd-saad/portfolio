@@ -4,5 +4,18 @@ import { HeroSection } from './HeroSection';
 import { ExperienceSection } from './ExperienceSection';
 import { ProjectSection } from './ProjectSection';
 import { CertificationSection } from './CertificationSection';
+import { SolutionsSection } from './SolutionsSection';
+import { BlogSection } from './BlogSection';
+import { ComingSoonSection } from './ComingSoonSection';
 
-export { SkillsSection, ContactSection, HeroSection, ExperienceSection, ProjectSection, CertificationSection };
+export {
+  SkillsSection,
+  ContactSection,
+  HeroSection,
+  ExperienceSection,
+  ProjectSection,
+  CertificationSection,
+  SolutionsSection,
+  BlogSection,
+  ComingSoonSection,
+};
