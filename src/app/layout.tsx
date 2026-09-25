@@ -24,6 +24,22 @@ export const metadata: Metadata = {
   }
 }
 
+const themeScript = `
+(function() {
+  try {
+    const savedTheme = localStorage.getItem('theme');
+    const theme =
+      savedTheme === 'light' || savedTheme === 'dark'
+        ? savedTheme
+        : 'dark';
+
+    document.documentElement.dataset.theme = theme;
+  } catch (_) {
+    document.documentElement.dataset.theme = 'dark';
+  }
+})();
+`;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +53,7 @@ export default async function RootLayout({
     .map(s => ({ section_type: s.section_type as string }));
 
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -59,6 +75,11 @@ export default async function RootLayout({
               ],
             })
           }}
+        />
+        <script
+            dangerouslySetInnerHTML={{
+              __html: themeScript,
+            }}
         />
       </head>
       <body className={inter.className}>
