@@ -2,6 +2,7 @@ import { validateEnv } from '@/lib/env'
 validateEnv()
 
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Header, Footer } from '@/components/shared'
@@ -23,7 +24,19 @@ export const metadata: Metadata = {
     url: 'https://abd-saad.vercel.app',
   }
 }
-
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Abdullah Saad',
+  jobTitle: 'Senior DevOps Engineer',
+  description:
+      'Experienced DevOps Engineer specializing in cloud infrastructure, automation, and scalable solutions',
+  url: 'https://abd-saad.vercel.app',
+  sameAs: [
+    'https://github.com/abd-saad',
+    'https://linkedin.com/in/abdullah-saad-93a0181b3',
+  ],
+}
 const themeScript = `
 (function() {
   try {
@@ -55,41 +68,24 @@ export default async function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Abdullah Saad",
-              "jobTitle": "Senior DevOps Engineer",
-              "description": "Experienced DevOps Engineer specializing in cloud infrastructure, automation, and scalable solutions",
-              "url": "https://abd-saad.vercel.app",
-              "sameAs": [
-                "https://github.com/abd-saad",
-                "https://linkedin.com/in/abdullah-saad-93a0181b3"
-              ],
-            })
-          }}
-        />
-        <script
-            dangerouslySetInnerHTML={{
-              __html: themeScript,
-            }}
-        />
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd)}
+        </script>
       </head>
       <body className={inter.className}>
+        <Script
+            id="theme-init"
+            strategy="beforeInteractive"
+        >
+          {themeScript}
+        </Script>
         <Header sections={navSections} />
         <main className="min-h-screen">
           {children}
-          <SpeedInsights />
-          <Analytics />
         </main>
         <Footer sections={navSections} />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   )
