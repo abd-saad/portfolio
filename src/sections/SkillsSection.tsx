@@ -6,11 +6,6 @@ interface SkillsSectionProps {
   content: THomepage;
 }
 
-function getLevelLabel(level: string | null | undefined) {
-  if (!level) return 'Not Rated';
-  return level.charAt(0).toUpperCase() + level.slice(1);
-}
-
 export const SkillsSection = async ({ content }: SkillsSectionProps) => {
   const categories = await getSkillCategoriesWithSkills();
 
@@ -39,8 +34,8 @@ export const SkillsSection = async ({ content }: SkillsSectionProps) => {
 
               <div className="flex flex-wrap gap-2">
                 {category.skills.map((skill) => (
-                  <span key={skill.id} className="rounded-lg border border-[var(--line)] bg-[var(--surface-2)] px-[9px] py-1.5 text-xs text-[var(--muted)]">
-                    <strong className="font-semibold text-[var(--text)]">{skill.name}</strong> · {getLevelLabel(skill.level)}
+                  <span key={skill.id} className="rounded-lg border border-[var(--line)] bg-[var(--surface-2)] px-[9px] py-1.5 text-xs font-semibold text-[var(--text)]">
+                    {skill.name}
                   </span>
                 ))}
               </div>
