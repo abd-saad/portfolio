@@ -6,6 +6,7 @@ import { ProjectSection } from './ProjectSection';
 import { CertificationSection } from './CertificationSection';
 import { SolutionsSection } from './SolutionsSection';
 import { BlogSection } from './BlogSection';
+import { ComingSoonSection } from './ComingSoonSection';
 
 export {
   SkillsSection,
@@ -16,4 +17,5 @@ export {
   CertificationSection,
   SolutionsSection,
   BlogSection,
+  ComingSoonSection,
 };
