@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getSolutionBySlug } from '@/services';
+import { MarkdownContent } from '@/components/ui/MarkdownContent';
 
 interface SolutionPageProps {
   params: Promise<{ slug: string }>;
@@ -55,9 +56,7 @@ export default async function SolutionDetailPage({ params }: SolutionPageProps) 
                 <p className="text-[11px] font-bold uppercase tracking-[.08em] text-[var(--muted-2)]">{section.section_type}</p>
                 <h2 className="mt-2 text-xl font-semibold tracking-[-.03em] text-[var(--text)]">{section.title}</h2>
               </div>
-              <div className="whitespace-pre-wrap text-sm leading-7 text-[var(--muted)] md:text-base">
-                {section.content}
-              </div>
+              <MarkdownContent content={section.content} />
             </section>
           ))}
         </div>
