@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Navigation } from './Navigation';
 
 interface HeaderProps {
-  sections: { section_type: string }[];
+  sections: { section_type: string; enabled: boolean }[];
 }
 
 type Theme = 'dark' | 'light';
