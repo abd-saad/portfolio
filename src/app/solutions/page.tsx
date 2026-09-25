@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { getSolutions } from '@/services';
+import { isHomepageSectionEnabled } from '@/services/homepage';
 
 export const metadata: Metadata = {
   title: 'Solutions | Abdullah Saad',
@@ -8,6 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default async function SolutionsPage() {
+  const enabled = await isHomepageSectionEnabled('solutions');
+  if (!enabled) redirect('/#solutions');
+
   const solutions = await getSolutions();
 
   return (
