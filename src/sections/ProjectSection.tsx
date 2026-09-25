@@ -1,6 +1,5 @@
 import { getProjects } from "@/services";
 import { THomepage } from "@/types";
-import { ArrowUpRight, Sparkles } from "lucide-react";
 
 interface ProjectSectionProps {
   content: THomepage;
@@ -8,63 +7,51 @@ interface ProjectSectionProps {
 
 export const ProjectSection = async ({ content }: ProjectSectionProps) => {
   const projects = await getProjects();
+  if (projects.length === 0) return null;
 
   return (
-    <section id="projects" className="py-24 sm:py-32">
+    <section id="projects" className="proto-section">
       <div className="section-shell">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl">
-            <span className="section-kicker">Selected work</span>
-            <h2 className="section-title mt-5">{content.title}</h2>
-            <p className="section-copy mt-5">{content.subtitle}</p>
+        <div className="proto-section-head">
+          <div>
+            <p className="proto-kicker">03 / Projects</p>
+            <h2 className="proto-title">{content.title}</h2>
           </div>
-          <div className="hidden items-center gap-2 text-sm text-slate-500 lg:flex">
-            <Sparkles className="h-4 w-4 text-violet-300" />
-            Built around measurable outcomes
-          </div>
+          <p className="proto-intro">{content.subtitle}</p>
         </div>
 
-        <div className="mt-14 grid gap-5 lg:grid-cols-3">
+        <div className="grid gap-3.5 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
-            <article key={project.id} className="glass-panel card-hover group flex min-h-[360px] flex-col rounded-3xl p-6 sm:p-7">
-              <div className="flex items-center justify-between gap-4">
-                <span className="font-mono text-xs text-slate-600">PROJECT / {String(index + 1).padStart(2, '0')}</span>
-                <ArrowUpRight className="h-4 w-4 text-slate-600 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cyan-300" />
+            <article key={project.id} className="flex min-h-[310px] flex-col rounded-[20px] border border-[var(--line)] bg-[var(--surface)] p-[23px] transition hover:-translate-y-1 hover:border-[var(--line-strong)]">
+              <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[.08em] text-[var(--muted-2)]">
+                <span>Project {String(index + 1).padStart(2, '0')}</span>
+                <span className="h-[7px] w-[7px] rounded-full bg-[var(--accent)] opacity-80" />
               </div>
 
-              <h3 className="mt-8 text-2xl font-semibold tracking-tight text-white">{project.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">{project.description}</p>
+              <h3 className="mt-7 text-xl font-semibold tracking-[-.03em] text-[var(--text)]">{project.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{project.description}</p>
 
               {project.highlights.length > 0 && (
-                <ul className="mt-6 space-y-2">
+                <ul className="mt-5 grid list-none gap-2 p-0">
                   {project.highlights.map((highlight, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm leading-6 text-slate-300">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300" />
+                    <li key={i} className="relative pl-4 text-sm leading-6 text-[var(--muted)] before:absolute before:left-0 before:top-[.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--accent)] before:opacity-75">
                       {highlight}
                     </li>
                   ))}
                 </ul>
               )}
 
-              <div className="mt-auto pt-8">
+              <div className="mt-auto pt-6">
                 <div className="flex flex-wrap gap-2">
                   {project.technologies.map((tech, i) => (
-                    <span key={i} className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-slate-400">{tech}</span>
+                    <span key={i} className="rounded-lg border border-[var(--line)] bg-[var(--surface-2)] px-2 py-1 text-[11px] font-semibold text-[var(--muted)]">{tech}</span>
                   ))}
                 </div>
 
                 {(project.github || project.demo) && (
-                  <div className="mt-6 flex items-center gap-4 border-t border-white/[0.06] pt-5 text-sm font-medium">
-                    {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-slate-300 transition hover:text-white">
-                        GitHub <ArrowUpRight className="h-4 w-4" />
-                      </a>
-                    )}
-                    {project.demo && (
-                      <a href={project.demo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-cyan-300 transition hover:text-cyan-200">
-                        Live demo <ArrowUpRight className="h-4 w-4" />
-                      </a>
-                    )}
+                  <div className="mt-5 flex gap-4 border-t border-[var(--line)] pt-4 text-[13px] font-bold">
+                    {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-[var(--text)] hover:text-[var(--accent)]">GitHub ↗</a>}
+                    {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer" className="text-[var(--text)] hover:text-[var(--accent)]">Live demo ↗</a>}
                   </div>
                 )}
               </div>
