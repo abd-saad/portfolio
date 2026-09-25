@@ -1,4 +1,5 @@
 import React from 'react';
+import { Mail, ArrowUpRight } from 'lucide-react';
 import { ContactForm, SocialLinks } from '@/components/ui';
 import { THomepage } from '@/types';
 
@@ -8,47 +9,45 @@ interface ContactSectionProps {
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ content }) => {
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">{content.title}</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {content.subtitle}
-          </p>
-        </div>
+    <section id="contact" className="py-24 sm:py-32">
+      <div className="section-shell">
+        <div className="glass-panel overflow-hidden rounded-[2rem]">
+          <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="relative border-b border-white/10 p-7 sm:p-10 lg:border-b-0 lg:border-r lg:p-12">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/[0.08] via-transparent to-violet-500/[0.08]" />
+              <div className="relative z-10">
+                <span className="section-kicker">Contact</span>
+                <h2 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{content.title}</h2>
+                <p className="section-copy mt-5">{content.subtitle}</p>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div>
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Get In Touch</h3>
-              <p className="text-gray-600 leading-relaxed">
-                I&apos;m always interested in discussing new opportunities, whether it&apos;s optimizing existing 
-                infrastructure, building new cloud architectures, or consulting on DevOps best practices.
-              </p>
-            </div>
+                <div className="mt-9 rounded-2xl border border-white/10 bg-black/10 p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyan-300/10 text-cyan-300">
+                      <Mail className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-white">Open to meaningful opportunities</p>
+                      <p className="mt-1 text-sm leading-6 text-slate-400">Infrastructure, platform engineering, cloud architecture, automation, and DevOps consulting.</p>
+                    </div>
+                  </div>
+                </div>
 
-            {/* Social Links */}
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Connect With Me</h4>
-              <SocialLinks />
-            </div>
+                <div className="mt-8">
+                  <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Elsewhere</p>
+                  <SocialLinks />
+                </div>
 
-            {/* Availability Status */}
-            <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-xl">
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-                <div>
-                  <p className="font-semibold text-green-800">Available for New Projects</p>
-                  <p className="text-sm text-green-600">Currently accepting new clients and consulting opportunities</p>
+                <div className="mt-8 flex items-center gap-2 text-xs font-medium text-emerald-300">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.7)]" />
+                  Available for new projects
+                  <ArrowUpRight className="h-3.5 w-3.5" />
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Contact Form */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
-            <ContactForm />
+            <div className="bg-slate-950/30 p-7 sm:p-10 lg:p-12">
+              <ContactForm />
+            </div>
           </div>
         </div>
       </div>
