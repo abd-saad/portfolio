@@ -9,7 +9,6 @@ export const getHomepage = unstable_cache(
     const { data, error } = await supabase
       .from('home_sections')
       .select('*')
-      .is('enabled', true)
       .order('sequence', { ascending: true });
 
     if (error) throw new Error(error.message);
