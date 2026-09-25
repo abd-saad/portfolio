@@ -29,7 +29,7 @@ export const getExperiences = unstable_cache(
     const { data, error } = await supabase
       .from('experiences')
       .select('*')
-      .order('end', { ascending: false });
+      .order('id', { ascending: false });
 
     if (error || !data) return [];
     return data.map((exp) => ({
