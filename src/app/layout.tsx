@@ -66,7 +66,7 @@ export default async function RootLayout({
     .map(s => ({ section_type: s.section_type as string }));
 
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" data-scroll-behavior="smooth">
       <head>
         <script type="application/ld+json">
           {JSON.stringify(jsonLd)}
