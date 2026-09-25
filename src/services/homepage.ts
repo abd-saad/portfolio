@@ -1,7 +1,7 @@
 import 'server-only';
 import { unstable_cache } from 'next/cache';
 import { createPublicClient } from '@/lib/supabase/public';
-import { THomepage } from '@/types/homepage';
+import { THomepage, THomepageEnum } from '@/types/homepage';
 
 export const getHomepage = unstable_cache(
   async (): Promise<THomepage[]> => {
@@ -17,3 +17,10 @@ export const getHomepage = unstable_cache(
   ['homepage'],
   { revalidate: 3600, tags: ['homepage'] }
 );
+
+export const isHomepageSectionEnabled = async (sectionType: THomepageEnum) => {
+  const homepage = await getHomepage();
+  return homepage.some(
+    (section) => section.section_type === sectionType && section.enabled === true
+  );
+};
