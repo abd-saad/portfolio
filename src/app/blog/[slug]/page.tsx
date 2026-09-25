@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBlogPostBySlug } from '@/services';
+import { MarkdownContent } from '@/components/ui/MarkdownContent';
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -46,8 +47,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         )}
 
-        <div className="mx-auto mt-12 max-w-3xl whitespace-pre-wrap text-[15px] leading-8 text-[var(--muted)] md:text-base">
-          {post.content}
+        <div className="mx-auto mt-12 max-w-3xl">
+          <MarkdownContent content={post.content} />
         </div>
       </div>
     </article>
