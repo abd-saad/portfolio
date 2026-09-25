@@ -1,6 +1,6 @@
 import { getProjects } from "@/services";
 import { THomepage } from "@/types";
-import { ArrowUpRight, Github, Sparkles } from "lucide-react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 
 interface ProjectSectionProps {
   content: THomepage;
@@ -57,7 +57,7 @@ export const ProjectSection = async ({ content }: ProjectSectionProps) => {
                   <div className="mt-6 flex items-center gap-4 border-t border-white/[0.06] pt-5 text-sm font-medium">
                     {project.github && (
                       <a href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-slate-300 transition hover:text-white">
-                        <Github className="h-4 w-4" /> GitHub
+                        GitHub <ArrowUpRight className="h-4 w-4" />
                       </a>
                     )}
                     {project.demo && (
