@@ -4,7 +4,7 @@ import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 interface NavigationProps {
-  sections: { section_type: string }[];
+  sections: { section_type: string; enabled: boolean }[];
   isMobile?: boolean;
   onItemClick?: () => void;
 }
@@ -17,7 +17,17 @@ export const Navigation: React.FC<NavigationProps> = ({ sections, isMobile = fal
   const pathname = usePathname();
   const router = useRouter();
 
-  const navigate = (sectionId: string) => {
+  const navigate = (sectionId: string, enabled: boolean) => {
+    if (!enabled) {
+      if (pathname === '/') {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        router.push(`/#${sectionId}`);
+      }
+      onItemClick?.();
+      return;
+    }
+
     if (sectionId === 'solutions' || sectionId === 'blog') {
       router.push(`/${sectionId}`);
       onItemClick?.();
@@ -48,10 +58,13 @@ export const Navigation: React.FC<NavigationProps> = ({ sections, isMobile = fal
       {sections.map((section) => (
         <button
           key={section.section_type}
-          onClick={() => navigate(section.section_type)}
+          onClick={() => navigate(section.section_type, section.enabled)}
           className={itemClassName}
+          title={section.enabled ? undefined : 'Coming soon'}
+          aria-label={`${capitalize(section.section_type)}${section.enabled ? '' : ' — Coming soon'}`}
         >
           {capitalize(section.section_type)}
+          {!section.enabled && <span className="ml-1 text-[10px] uppercase tracking-[.08em] text-[var(--muted-2)]">Soon</span>}
         </button>
       ))}
     </nav>
