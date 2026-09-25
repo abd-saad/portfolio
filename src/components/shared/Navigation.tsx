@@ -18,37 +18,29 @@ export const Navigation: React.FC<NavigationProps> = ({ sections, isMobile = fal
     onItemClick?.();
   };
 
-  const items = sections.filter((section) => section.section_type !== 'contact');
-
   if (isMobile) {
     return (
-      <nav className="flex flex-col gap-1 px-5 py-5">
-        {items.map((section) => (
+      <nav className="mx-3 flex flex-col gap-1 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-2.5 shadow-[var(--shadow)]">
+        {sections.map((section) => (
           <button
             key={section.section_type}
             onClick={() => scrollToSection(section.section_type)}
-            className="rounded-xl px-3 py-3 text-left text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+            className="rounded-[10px] px-3 py-2.5 text-left text-[13px] font-semibold text-[var(--muted)] transition hover:bg-[var(--surface-3)] hover:text-[var(--text)]"
           >
             {capitalize(section.section_type)}
           </button>
         ))}
-        <button
-          onClick={() => scrollToSection('contact')}
-          className="mt-3 rounded-full bg-white px-4 py-3 text-sm font-semibold text-slate-950"
-        >
-          Let&apos;s talk
-        </button>
       </nav>
     );
   }
 
   return (
-    <nav className="hidden md:flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1.5 backdrop-blur-xl">
-      {items.map((section) => (
+    <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
+      {sections.map((section) => (
         <button
           key={section.section_type}
           onClick={() => scrollToSection(section.section_type)}
-          className="rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
+          className="rounded-[10px] px-[11px] py-2 text-[13px] font-semibold text-[var(--muted)] transition hover:bg-[var(--surface-3)] hover:text-[var(--text)]"
         >
           {capitalize(section.section_type)}
         </button>
