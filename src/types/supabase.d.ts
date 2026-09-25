@@ -120,6 +120,24 @@ export type Database = {
         }
         Relationships: []
       }
+      cache_invalidation_events: {
+        Row: {
+          cache_tag: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          cache_tag: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          cache_tag?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       certifications: {
         Row: {
           badge_image_url: string | null

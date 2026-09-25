@@ -61,10 +61,9 @@ export const Navigation: React.FC<NavigationProps> = ({ sections, isMobile = fal
           onClick={() => navigate(section.section_type, section.enabled)}
           className={itemClassName}
           title={section.enabled ? undefined : 'Coming soon'}
-          aria-label={`${capitalize(section.section_type)}${section.enabled ? '' : ' — Coming soon'}`}
+          aria-label={`${capitalize(section.section_type)}`}
         >
           {capitalize(section.section_type)}
-          {!section.enabled && <span className="ml-1 text-[10px] uppercase tracking-[.08em] text-[var(--muted-2)]">Soon</span>}
         </button>
       ))}
     </nav>
