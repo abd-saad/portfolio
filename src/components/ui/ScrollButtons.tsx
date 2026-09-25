@@ -84,7 +84,7 @@ export const ScrollButtons = () => {
                 setOpen(true);
               }
             }}
-            className="w-full bg-gradient-to-r from-blue-600 to-teal-600 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+            className="w-full bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 px-8 py-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-amber-500/20 transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400"
           >
             <FileText aria-hidden="true" className="mr-2 h-5 w-5" />
             {downloading ? 'Preparing download…' : 'Resume'}
