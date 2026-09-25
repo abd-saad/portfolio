@@ -4,120 +4,107 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root {
+  --background: #07111f;
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --surface: rgba(15, 23, 42, 0.72);
+  --surface-strong: rgba(15, 23, 42, 0.92);
+  --border: rgba(148, 163, 184, 0.16);
+  --accent: #22d3ee;
+  --accent-2: #8b5cf6;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  background: var(--background);
 }
 
 body {
-  background: var(--background);
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.10), transparent 28%),
+    radial-gradient(circle at 80% 15%, rgba(139, 92, 246, 0.10), transparent 26%),
+    linear-gradient(180deg, #07111f 0%, #0a1322 45%, #08111d 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */
-
-/* Custom animations */
-.animation-delay-2000 {
-  animation-delay: 2s;
+  text-rendering: optimizeLegibility;
 }
 
-.animation-delay-4000 {
-  animation-delay: 4s;
+::selection {
+  background: rgba(34, 211, 238, 0.3);
+  color: #ffffff;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+section {
+  scroll-margin-top: 96px;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 9px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #08111d;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #334155;
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #475569;
 }
 
-/* Focus styles for accessibility */
-*:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
-/* Gradient text utility */
+.glass-panel {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.58));
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 80px rgba(2, 6, 23, 0.34);
+}
+
+.section-shell {
+  @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8;
+}
+
+.section-kicker {
+  @apply inline-flex items-center rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300;
+}
+
+.section-title {
+  @apply text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white;
+}
+
+.section-copy {
+  @apply text-base sm:text-lg leading-8 text-slate-400;
+}
+
 .gradient-text {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-600;
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-violet-400;
 }
 
-/* Custom button hover effects */
 .btn-primary {
-  @apply bg-gradient-to-r from-blue-600 to-teal-600 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200;
+  @apply inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition-all duration-200 hover:-translate-y-0.5 hover:bg-cyan-200;
 }
 
 .btn-secondary {
-  @apply border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:border-blue-600 hover:text-blue-600 transition-all duration-200;
+  @apply inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10;
 }
 
-/* Card hover effects */
 .card-hover {
-  @apply hover:shadow-xl hover:-translate-y-2 transition-all duration-300;
+  @apply transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/30;
 }
 
-/* Loading animation */
-.loading-dots {
-  @apply flex space-x-1;
-}
-
-.loading-dots div {
-  @apply w-2 h-2 bg-current rounded-full animate-pulse;
-}
-
-.loading-dots div:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.loading-dots div:nth-child(3) {
-  animation-delay: 0.2s;
-}
-
-/* Glassmorphism effect */
-.glass-effect {
-  @apply bg-white/80 backdrop-blur-md border border-white/20;
-}
-
-/* Progress bar animation */
-@keyframes progress {
-  from {
-    width: 0%;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
-  to {
-    width: var(--progress-width);
-  }
-}
-
-.progress-bar {
-  animation: progress 1s ease-out forwards;
 }
