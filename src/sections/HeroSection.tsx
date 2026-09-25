@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { THomepage } from "@/types";
 import { ScrollButtons, SocialLinks } from "@/components/ui";
 
@@ -9,54 +8,59 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = async ({ content }) => {
   return (
-    <section
-      id="about"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
-    >
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-teal-50"></div>
-      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-      <div className="absolute top-40 right-10 w-72 h-72 bg-teal-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div className="text-center lg:text-left">
-            <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span>
-              Available for new opportunities
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              {content.title}
-            </h1>
-
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl">
-              {content.subtitle}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              <ScrollButtons />
-              <SocialLinks />
-            </div>
+    <section id="about" className="pt-[108px] pb-[72px] sm:pt-[132px]">
+      <div className="section-shell grid items-end gap-12 lg:grid-cols-[1.28fr_.72fr] lg:gap-[72px]">
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[13px] font-bold text-[var(--muted)]">
+            <span className="h-[7px] w-[7px] rounded-full bg-[var(--accent)] shadow-[0_0_16px_var(--accent)]" />
+            Available for new opportunities
           </div>
 
-          {/* Visual Element */}
-          <div className="relative lg:order-first order-last">
-            <div className="w-80 h-80 mx-auto rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
-              <Image
-                src="/api/profile-image"
-                alt="Profile"
-                width={320}
-                height={320}
-                preload
-                className="object-cover"
-                sizes="320px"
-              />
-            </div>
+          <h1 className="mt-6 max-w-[850px] text-[clamp(54px,8vw,100px)] font-[760] leading-[.94] tracking-[-.062em] text-[var(--text)]">
+            {content.title}
+          </h1>
+
+          <p className="mt-6 max-w-[710px] text-[clamp(17px,2vw,21px)] leading-[1.68] tracking-[-.018em] text-[var(--muted)]">
+            {content.subtitle}
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <ScrollButtons />
+            <SocialLinks />
           </div>
         </div>
+
+        <aside className="rounded-[28px] border border-[var(--line)] bg-[linear-gradient(145deg,var(--surface),var(--surface-2))] p-6 shadow-[var(--shadow)] sm:p-[26px]" aria-label="DevOps profile snapshot">
+          <div className="mb-6 flex gap-[7px]">
+            <span className="h-2 w-2 rounded-full bg-[var(--muted-2)] opacity-55" />
+            <span className="h-2 w-2 rounded-full bg-[var(--muted-2)] opacity-55" />
+            <span className="h-2 w-2 rounded-full bg-[var(--muted-2)] opacity-55" />
+          </div>
+
+          <div className="font-mono text-[13px] leading-6 text-[var(--muted)]">
+            <p><span className="text-[var(--accent)]">$</span> <span className="text-[var(--text)]">whoami</span></p>
+            <p>abdullah-saad / devops-engineer</p>
+            <p className="mt-2"><span className="text-[var(--accent)]">$</span> <span className="text-[var(--text)]">focus --current</span></p>
+            <p>cloud · platform · reliability · automation</p>
+            <p className="mt-2"><span className="text-[var(--accent)]">$</span> <span className="text-[var(--text)]">status</span></p>
+            <p><span className="text-[var(--accent)]">●</span> shipping reliable infrastructure</p>
+          </div>
+
+          <div className="mt-6 grid grid-cols-3 gap-2.5">
+            <div className="rounded-[14px] border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg)_32%,transparent)] p-3 sm:p-4">
+              <strong className="block text-xl tracking-[-.04em] text-[var(--text)]">AWS</strong>
+              <span className="text-[11px] text-[var(--muted)]">cloud platform</span>
+            </div>
+            <div className="rounded-[14px] border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg)_32%,transparent)] p-3 sm:p-4">
+              <strong className="block text-xl tracking-[-.04em] text-[var(--text)]">K8s</strong>
+              <span className="text-[11px] text-[var(--muted)]">orchestration</span>
+            </div>
+            <div className="rounded-[14px] border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg)_32%,transparent)] p-3 sm:p-4">
+              <strong className="block text-xl tracking-[-.04em] text-[var(--text)]">IaC</strong>
+              <span className="text-[11px] text-[var(--muted)]">automation</span>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { Navigation } from './Navigation';
 
 interface HeaderProps {
@@ -10,41 +10,58 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ sections }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const saved = window.localStorage.getItem('theme') as 'dark' | 'light' | null;
+    const nextTheme = saved ?? 'dark';
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
   }, []);
 
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    window.localStorage.setItem('theme', nextTheme);
+  };
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100' : 'bg-transparent'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-2">
-            <span className="text-xl font-semibold text-gray-900">abd_saad.dev</span>
-          </div>
+    <header className="sticky top-0 z-50 py-3.5 backdrop-blur-[18px]">
+      <div className="section-shell relative flex items-center justify-between gap-5 rounded-[18px] border border-[var(--line)] bg-[color-mix(in_srgb,var(--surface)_83%,transparent)] py-2.5 pl-[18px] pr-3 shadow-[0_12px_40px_rgba(0,0,0,.12)]">
+        <button
+          onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+          className="flex items-center gap-2.5 text-sm font-[760] tracking-[-.02em] text-[var(--text)]"
+          aria-label="Back to top"
+        >
+          <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)] shadow-[0_0_22px_var(--accent)]" />
+          abd_saad.dev
+        </button>
 
-          {/* Desktop Navigation */}
-          <Navigation sections={sections} />
+        <Navigation sections={sections} />
 
-          {/* Mobile Menu Button */}
+        <div className="flex items-center gap-2">
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={toggleTheme}
+            className="grid h-[38px] w-[38px] place-items-center rounded-[11px] border border-[var(--line)] bg-transparent text-[var(--muted)] transition hover:border-[var(--line-strong)] hover:bg-[var(--surface-3)] hover:text-[var(--text)]"
+            aria-label="Toggle theme"
+            title="Toggle theme"
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+
+          <button
+            className="grid h-[38px] w-[38px] place-items-center rounded-[11px] border border-[var(--line)] bg-transparent text-[var(--muted)] transition hover:border-[var(--line-strong)] hover:bg-[var(--surface-3)] hover:text-[var(--text)] md:hidden"
+            onClick={() => setIsMenuOpen((value) => !value)}
+            aria-label="Toggle navigation"
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-b border-gray-200 shadow-lg">
+          <div className="absolute left-0 right-0 top-[58px] md:hidden">
             <Navigation sections={sections} isMobile onItemClick={() => setIsMenuOpen(false)} />
           </div>
         )}

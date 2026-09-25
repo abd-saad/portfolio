@@ -8,47 +8,32 @@ interface ContactSectionProps {
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ content }) => {
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">{content.title}</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {content.subtitle}
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div>
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Get In Touch</h3>
-              <p className="text-gray-600 leading-relaxed">
-                I&apos;m always interested in discussing new opportunities, whether it&apos;s optimizing existing 
-                infrastructure, building new cloud architectures, or consulting on DevOps best practices.
-              </p>
-            </div>
-
-            {/* Social Links */}
+    <section id="contact" className="proto-section">
+      <div className="section-shell">
+        <div className="overflow-hidden rounded-[32px] border border-[var(--line)] bg-[linear-gradient(145deg,var(--surface),var(--surface-2))] p-7 shadow-[var(--shadow)] sm:p-10">
+          <div className="grid gap-10 lg:grid-cols-[1fr_.85fr] lg:items-start">
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Connect With Me</h4>
-              <SocialLinks />
-            </div>
+              <p className="proto-kicker">05 / Contact</p>
+              <h2 className="mt-3 max-w-[760px] text-[clamp(36px,6vw,68px)] font-[760] leading-none tracking-[-.055em] text-[var(--text)]">{content.title}</h2>
+              <p className="mt-[18px] max-w-[620px] text-[var(--muted)]">{content.subtitle}</p>
 
-            {/* Availability Status */}
-            <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-xl">
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-                <div>
-                  <p className="font-semibold text-green-800">Available for New Projects</p>
-                  <p className="text-sm text-green-600">Currently accepting new clients and consulting opportunities</p>
-                </div>
+              <p className="mt-6 max-w-[620px] leading-7 text-[var(--muted)]">
+                I&apos;m always interested in discussing new opportunities, whether it&apos;s optimizing existing infrastructure, building new cloud architectures, or consulting on DevOps best practices.
+              </p>
+
+              <div className="mt-7">
+                <SocialLinks />
+              </div>
+
+              <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--muted)]">
+                <span className="h-2 w-2 rounded-full bg-[var(--accent)] shadow-[0_0_14px_var(--accent)]" />
+                Available for new projects and opportunities
               </div>
             </div>
-          </div>
 
-          {/* Contact Form */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
-            <ContactForm />
+            <div className="rounded-[20px] border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-6">
+              <ContactForm />
+            </div>
           </div>
         </div>
       </div>

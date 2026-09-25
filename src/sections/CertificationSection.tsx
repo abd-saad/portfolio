@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import { Shield, ExternalLink } from 'lucide-react';
 import { getCertifications } from '@/services';
 import { THomepage } from '@/types';
 import { convertDate } from '@/helper';
@@ -12,62 +11,52 @@ interface CertificationSectionProps {
 
 export const CertificationSection = async ({ content }: CertificationSectionProps) => {
   const certifications = await getCertifications();
+  if (certifications.length === 0) return null;
 
   return (
-    <section id="certifications" className="py-20 bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">{content.title}</h3>
-          <p className="text-lg text-gray-600">{content.subtitle}</p>
+    <section id="certifications" className="proto-section">
+      <div className="section-shell">
+        <div className="proto-section-head">
+          <div>
+            <p className="proto-kicker">04 / Certifications</p>
+            <h2 className="proto-title">{content.title}</h2>
+          </div>
+          <p className="proto-intro">{content.subtitle}</p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {certifications.map((cert, index) => {
+
+        <div className="grid gap-3.5 md:grid-cols-2">
+          {certifications.map((cert) => {
             const badgeSrc = getBadgeImageSrc(cert.id, cert.badge_image_url, process.env.NEXT_PUBLIC_SUPABASE_URL);
             return (
-            <div
-              key={cert.id}
-              className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group hover:-translate-y-1"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                {badgeSrc ? (
-                  <Image
-                    src={badgeSrc}
-                    sizes="64px"
-                    loading="lazy"
-                    alt={cert.name}
-                    width={64}
-                    height={64}
-                    className="object-contain"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-r from-blue-600 to-teal-600 rounded-full flex items-center justify-center">
-                    <Shield className="h-8 w-8 text-white" />
-                  </div>
-                )}
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">{cert.name}</h4>
-              <p className="text-sm text-gray-600 mb-1">{cert.provider}</p>
-              {cert.valid_from && (
-                <p className="text-xs text-gray-500">
-                  Issued: {convertDate(cert.valid_from)} | Expires: {cert.valid_until ? ` ${convertDate(cert.valid_until)}` : ''}
-                </p>
-              )}
-              {cert.credential_url && cert.credential_id && (
-                <a
-                  href={`${cert.credential_url}/badges/${cert.credential_id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 mt-3 text-xs text-blue-600 hover:text-blue-800 transition-colors"
-                >
-                  View credential <ExternalLink className="h-3 w-3" />
-                </a>
-              )}
-            </div>
+              <article key={cert.id} className="flex min-h-[250px] flex-col rounded-[28px] border border-[var(--line)] bg-[linear-gradient(145deg,var(--surface),var(--surface-2))] p-7">
+                <div className="grid h-[50px] w-[50px] place-items-center overflow-hidden rounded-[14px] border border-[color-mix(in_srgb,var(--accent)_22%,transparent)] bg-[var(--accent-soft)] text-[var(--accent)]">
+                  {badgeSrc ? (
+                    <Image src={badgeSrc} alt={cert.name} width={42} height={42} className="object-contain" sizes="42px" />
+                  ) : (
+                    <span className="text-xs font-black">CERT</span>
+                  )}
+                </div>
+
+                <h3 className="mb-[7px] mt-6 text-2xl font-semibold tracking-[-.035em] text-[var(--text)]">{cert.name}</h3>
+                <p className="m-0 text-sm text-[var(--muted)]">{cert.provider}</p>
+
+                <div className="mt-auto flex flex-col gap-4 pt-6 sm:flex-row sm:items-end sm:justify-between">
+                  {cert.valid_from && (
+                    <div className="text-xs text-[var(--muted-2)]">
+                      Issued {convertDate(cert.valid_from)}{cert.valid_until ? ` · Expires ${convertDate(cert.valid_until)}` : ''}
+                    </div>
+                  )}
+                  {cert.credential_url && cert.credential_id && (
+                    <a href={`${cert.credential_url}/badges/${cert.credential_id}`} target="_blank" rel="noopener noreferrer" className="text-[13px] font-bold text-[var(--text)] hover:text-[var(--accent)]">
+                      View credential ↗
+                    </a>
+                  )}
+                </div>
+              </article>
             );
           })}
         </div>
       </div>
     </section>
   );
-}
+};
