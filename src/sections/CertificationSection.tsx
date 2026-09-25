@@ -45,7 +45,7 @@ export const CertificationSection = async ({ content }: CertificationSectionProp
               <p className="text-sm text-gray-600 mb-1">{cert.provider}</p>
               {cert.valid_from && (
                 <p className="text-xs text-gray-500">
-                  Issued: {convertDate(cert.valid_from)} | Expires: {cert.valid_until ? ` ${convertDate(cert.valid_until)}` : ''}
+                  Issued: {convertDate(cert.valid_from)} {cert.valid_until ? `| Expires: ${convertDate(cert.valid_until)}` : ''}
                 </p>
               )}
               {cert.credential_url && cert.credential_id && (

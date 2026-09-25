@@ -35,33 +35,33 @@ export const Footer: React.FC<FooterProps> = ({ sections }) => {
               Passionate DevOps Engineer specializing in cloud infrastructure, automation, and scalable solutions. 
               Helping businesses build reliable, efficient, and secure technology foundations.
             </p>
-            <div className="flex items-center text-sm text-gray-400">
-              <span>Made with</span>
-              <Heart className="h-4 w-4 mx-1 text-red-500" />
-              <span>and</span>
-              <Coffee className="h-4 w-4 mx-1 text-yellow-600" />
-              <span>using</span>
-              <Code className="h-4 w-4 mx-1 text-blue-400" />
-              <span>Next.js & Tailwind CSS</span>
-            </div>
+            {/*<div className="flex items-center text-sm text-gray-400">*/}
+            {/*  <span>Made with</span>*/}
+            {/*  <Heart className="h-4 w-4 mx-1 text-red-500" />*/}
+            {/*  <span>and</span>*/}
+            {/*  <Coffee className="h-4 w-4 mx-1 text-yellow-600" />*/}
+            {/*  <span>using</span>*/}
+            {/*  <Code className="h-4 w-4 mx-1 text-blue-400" />*/}
+            {/*  <span>Next.js & Tailwind CSS</span>*/}
+            {/*</div>*/}
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-3">
-              {sections.map((section) => (
-                <li key={section.section_type}>
-                  <button
-                    onClick={() => scrollToSection(section.section_type)}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 transform inline-block"
-                  >
-                    {capitalize(section.section_type)}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/*<div>*/}
+          {/*  <h3 className="text-lg font-semibold mb-4">Quick Links</h3>*/}
+          {/*  <ul className="space-y-3">*/}
+          {/*    {sections.map((section) => (*/}
+          {/*      <li key={section.section_type}>*/}
+          {/*        <button*/}
+          {/*          onClick={() => scrollToSection(section.section_type)}*/}
+          {/*          className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 transform inline-block"*/}
+          {/*        >*/}
+          {/*          {capitalize(section.section_type)}*/}
+          {/*        </button>*/}
+          {/*      </li>*/}
+          {/*    ))}*/}
+          {/*  </ul>*/}
+          {/*</div>*/}
 
           {/* Services */}
           {/* <div>

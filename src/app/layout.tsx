@@ -13,12 +13,12 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Abdullah Saad Portfolio - Devops Engineer',
-  description: 'Professional DevOps Engineer specializing in cloud infrastructure, automation solutions, and scalable system architecture.',
+  description: 'DevOps Engineer specializing in cloud infrastructure, automation solutions, and scalable system architecture.',
   keywords: 'DevOps Engineer, Cloud Architecture, AWS, Kubernetes, CI/CD, Infrastructure as Code, Docker, Terraform',
   authors: [{ name: 'Abdullah Saad' }],
   openGraph: {
     title: 'Abdullah Saad Portfolio - Devops Engineer',
-    description: 'Professional DevOps Engineer specializing in cloud infrastructure, automation solutions, and scalable system architecture.',
+    description: 'DevOps Engineer specializing in cloud infrastructure, automation solutions, and scalable system architecture.',
     type: 'website',
     url: 'https://abd-saad.vercel.app',
   }
@@ -50,7 +50,7 @@ export default async function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               "name": "Abdullah Saad",
-              "jobTitle": "Senior DevOps Engineer",
+              "jobTitle": "DevOps Engineer",
               "description": "Experienced DevOps Engineer specializing in cloud infrastructure, automation, and scalable solutions",
               "url": "https://abd-saad.vercel.app",
               "sameAs": [
